@@ -4,17 +4,21 @@ import {
   BrowserRouter as Router,
   Route,
   useHistory,
-  Switch,
+  Switch
 } from "react-router-dom";
 import { Security, LoginCallback, SecureRoute } from "@okta/okta-react";
 
 import { NotFoundPage } from "./components/pages/NotFound";
 import { ExampleListPage } from "./components/pages/ExampleList";
 import { ProfileListPage } from "./components/pages/ProfileList";
+import { SearchResultPage } from "./components/pages/Search";
 import { LoginPage } from "./components/pages/Login";
 import { HomePage } from "./components/pages/Home";
 import { config } from "./utils/oktaConfig";
 import { LoadingComponent } from "./components/common";
+
+// Import some styling
+import "./styles/App.css";
 
 ReactDOM.render(
   <Router>
@@ -49,6 +53,7 @@ function App() {
         />
         <SecureRoute path="/example-list" component={ExampleListPage} />
         <SecureRoute path="/profile-list" component={ProfileListPage} />
+        <SecureRoute path="/search" component={SearchResultPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </Security>

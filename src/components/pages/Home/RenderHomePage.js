@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../../common";
+import { Button, SearchBar } from "../../common";
 
 function RenderHomePage(props) {
   const { userInfo, authService } = props;
+
   return (
     <div>
       <h1>Hi {userInfo.name} Welcome to Labs Basic SPA</h1>
@@ -14,6 +15,13 @@ function RenderHomePage(props) {
         </p>
         <p>
           <Link to="/profile-list">Profiles</Link>
+        </p>
+        <p>
+          <SearchBar
+            labelId="21"
+            name="theSearch"
+            placeholder="Find your book"
+          />
         </p>
         <p>
           <Button

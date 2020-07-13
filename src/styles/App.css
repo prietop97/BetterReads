@@ -1,0 +1,18 @@
+.bookContainer{
+    display: flex;
+}
+
+.bookContainer .bookThumbStatus {
+    display: flex;
+    flex-direction: column;
+}
+
+.bookContainer .bookDetails{
+    display: flex;
+    flex-direction: column;   
+}
+
+.bookContainer .bookDetails .bookTitleFavIcon{
+    display: flex;
+    flex-direction: row;
+}
