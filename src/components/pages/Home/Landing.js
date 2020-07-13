@@ -4,7 +4,11 @@ import NavBar from "./NavBar";
 import book from "../../../images/book.svg";
 import reading from "../../../images/reading.svg";
 
-import { Flex, Text, Input, Button } from "@chakra-ui/core";
+import { Flex, Text, Button, Box } from "@chakra-ui/core";
+
+import { GiBookshelf } from "react-icons/gi";
+import { AiFillExperiment } from "react-icons/ai";
+import { FaBookReader } from "react-icons/fa";
 
 function Landing() {
   return (
@@ -43,7 +47,6 @@ function Landing() {
           align="center"
           direction="column"
           bg="#d9d9d9"
-          // width="100vw"
           p="6rem"
           fontSize="1.2rem"
           textAlign="center"
@@ -73,8 +76,9 @@ function Landing() {
             p="1.5rem"
             borderRadius=".5rem"
             width="33%"
+            align="center"
           >
-            <Text color="#ea7751">icon</Text>
+            <Box as={GiBookshelf} mb="1rem" size="2rem" />
             <Text fontWeight="bold" fontSize="1.2rem" m="0">
               Endless Library
             </Text>
@@ -91,8 +95,9 @@ function Landing() {
             p="1.5rem"
             borderRadius=".5rem"
             width="33%"
+            align="center"
           >
-            <Text color="#ea7751">icon</Text>
+            <Box as={AiFillExperiment} mb="1rem" size="2rem" />
             <Text fontWeight="bold" fontSize="1.2rem" m="0">
               Tailored Recommendations
             </Text>
@@ -110,8 +115,9 @@ function Landing() {
             p="1.5rem"
             borderRadius=".5rem"
             width="33%"
+            align="center"
           >
-            <Text color="#ea7751">icon</Text>
+            <Box as={FaBookReader} mb="1rem" size="2rem" />
             <Text fontWeight="bold" fontSize="1.2rem" m="0">
               Custom Libraries
             </Text>
