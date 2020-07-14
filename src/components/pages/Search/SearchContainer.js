@@ -2,20 +2,22 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { bookSearch } from "../../../api";
 
-import { List, SearchBar } from "../../common";
+import { List, SearchBar, Header } from "../../common";
 import RenderSearchPage from "./RenderSearchPage";
 
 const SearchResultsList = () => {
   const history = useHistory();
 
-  // const bookQuery = history.location.query;
-  const bookQuery = "harry+potter";
+  let bookQuery = "harry+potter";
+  if (history.location.query !== undefined) {
+    bookQuery = history.location.query;
+  }
 
   return (
     <>
-      <p>
-        <SearchBar labelId="21" name="theSearch" placeholder="Find your book" />
-      </p>
+      <Header />
+      <SearchBar labelId="21" name="theSearch" placeholder="Find your book" />
+
       <List
         getItemsData={() => bookSearch(bookQuery)}
         LoadingComponent={() => <div>Loading results...</div>}
