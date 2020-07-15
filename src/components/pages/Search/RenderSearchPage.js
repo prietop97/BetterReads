@@ -12,54 +12,65 @@ import {
 } from "@chakra-ui/core";
 
 import { FaRegHeart, FaRegStar, FaSortDown, FaStar } from "react-icons/fa";
+import { BsHeart } from "react-icons/bs";
 
 const RenderSearchPage = props => (
   <div>
     {props.data.map(book => (
       <>
-        <Flex key={book.id} w="440px">
-          <Box roundedTopLeft="lg" overflow="hidden">
+        <Flex key={book.id} align="center" width="25rem">
+          <Flex overflow="hidden" direction="column" roundedTopLeft="0.1875rem">
             <Image
               src={book.volumeInfo.imageLinks.smallThumbnail}
               alt={book.volumeInfo.title}
               pb="0"
-              mb="0"
+              m="0"
+              width="5rem"
             />
             <Select
               size="sm"
-              icon={FaSortDown}
+              width="5rem"
               rounded="0"
-              roundedBottomLeft="lg"
-              fontSize=".875rem"
-              pt="0"
-              mt="0"
+              roundedBottomLeft="0.1875rem"
+              fontSize=".8125rem"
+              p=".3rem"
+              m="0"
+              placeholder="Track"
+              backgroundColor="#D24719"
+              color="white"
             >
               <option value="1">To Read</option>
               <option value="2">Reading</option>
               <option value="3">Finished</option>
             </Select>
-          </Box>
-          <Box pl="1rem">
-            <Flex alignItems="start">
+          </Flex>
+          <Box ml=".5rem">
+            <Flex justify="space-between" width="16rem" m="0">
               <Box>
-                <Text fontSize="1rem" fontFamily="Frank Ruhl Libre">
+                <Text
+                  fontSize="1.15rem"
+                  fontFamily="Frank Ruhl Libre"
+                  fontWeight="600"
+                  m="0"
+                  color="#4E4C4A"
+                >
                   {book.volumeInfo.title}
                 </Text>
-                <Text fontSize="0.875rem" fontFamily="Frank Ruhl Libre">
+                <Text fontSize="1rem" fontFamily="Frank Ruhl Libre" mt="0.5rem">
                   {book.volumeInfo.authors[0]}
                 </Text>
               </Box>
               <Box>
-                <Box as={FaRegHeart} size="1.5rem" color="rgb(210, 71, 25)" />
+                <Box as={BsHeart} size="2rem" color="#D24719" ml="1rem" />
               </Box>
             </Flex>
             <Box>
               <Box>
-                <Box as={FaStar} size="1.25rem" color="#E8E8E8" pr=".125rem" />
-                <Box as={FaStar} size="1.25rem" color="#E8E8E8" pr=".125rem" />
-                <Box as={FaStar} size="1.25rem" color="#E8E8E8" pr=".125rem" />
-                <Box as={FaStar} size="1.25rem" color="#E8E8E8" pr=".125rem" />
-                <Box as={FaStar} size="1.25rem" color="#E8E8E8" pr=".125rem" />
+                <Box as={FaStar} size="1.5rem" color="#E8E8E8" pr=".125rem" />
+                <Box as={FaStar} size="1.5rem" color="#E8E8E8" pr=".125rem" />
+                <Box as={FaStar} size="1.5rem" color="#E8E8E8" pr=".125rem" />
+                <Box as={FaStar} size="1.5rem" color="#E8E8E8" pr=".125rem" />
+                <Box as={FaStar} size="1.5rem" color="#E8E8E8" pr=".125rem" />
               </Box>
               {/* <Flex direction="row">
 						<Box><Input placeholder="Date Started" size="sm" w="75%" borderColor="rgb(232,232,232)" /></Box>

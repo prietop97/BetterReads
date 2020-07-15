@@ -61,7 +61,7 @@ function App() {
         />
         <SecureRoute path="/example-list" component={ExampleListPage} />
         <SecureRoute path="/profile-list" component={ProfileListPage} />
-        <SecureRoute path="/search" component={SearchResultPage} />
+        <Route path="/search" component={SearchResultPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </Security>
