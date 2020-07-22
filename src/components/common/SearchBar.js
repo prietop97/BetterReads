@@ -52,6 +52,7 @@ const SearchBar = props => {
           Search for a book that you want to track and add to shelves.
         </Text>
         <Flex m="1rem" align="center">
+          {/* <SearchContext.Provider value={{ setBookQuery, submitSearchQuery }}> */}
           <SearchContext.Consumer>
             {value => {
               return (
@@ -68,7 +69,10 @@ const SearchBar = props => {
                       placeholder="Search for a book"
                       borderColor="rgb(217,217,217)"
                       borderRadius="0.25rem 0 0 0.25rem"
-                      onChange={e => value.setBookQuery(e.target.value)}
+                      onChange={e => {
+                        console.log(e.target.value);
+                        value.setBookQuery(e.target.value);
+                      }}
                     />
 
                     <IconButton
@@ -87,6 +91,7 @@ const SearchBar = props => {
               );
             }}
           </SearchContext.Consumer>
+          {/* </SearchContext.Provider> */}
         </Flex>
       </Flex>
     </>

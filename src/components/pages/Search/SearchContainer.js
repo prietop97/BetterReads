@@ -20,14 +20,17 @@ const SearchResultsList = () => {
 
       <SearchContext.Consumer>
         {value => {
-          console.log(value);
-          return (
-            <List
-              getItemsData={() => bookSearch(bookQuery)}
-              LoadingComponent={() => <div>Loading results...</div>}
-              RenderItems={RenderSearchPage}
-            />
-          );
+          if (value.bookQuery) {
+            return (
+              <List
+                getItemsData={() => bookSearch(bookQuery)}
+                LoadingComponent={() => <div>Loading results...</div>}
+                RenderItems={RenderSearchPage}
+              />
+            );
+          } else {
+            return <div>Nothing to search for. Try again.</div>;
+          }
         }}
       </SearchContext.Consumer>
     </>
