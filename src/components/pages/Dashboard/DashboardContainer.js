@@ -1,31 +1,15 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { SearchContext } from "../../../state/context";
+import React from "react";
 
-import { Flex, Text, Input, Button, Box } from "@chakra-ui/core";
-
-import { FaUserCircle } from "react-icons/fa";
-import { AiOutlineSearch } from "react-icons/ai";
+import { Flex, Text, Button } from "@chakra-ui/core";
 
 import { SearchBar, Header } from "../../common";
 
 function DashboardContainer() {
-  const history = useHistory();
-
-  const testSearch = "The Giver";
-  const [bookQuery, setBookQuery] = useState("");
-
-  function submitSearchQuery() {
-    history.push({ pathname: "/search", query: bookQuery });
-  }
-
   return (
     <>
       <Header />
 
-      <SearchContext.Provider value={{ setBookQuery, submitSearchQuery }}>
-        <SearchBar labelId="21" name="theSearch" placeholder="Find your book" />
-      </SearchContext.Provider>
+      <SearchBar labelId="21" name="theSearch" placeholder="Find your book" />
 
       <Flex justify="space-between" m="1rem 4rem">
         <Flex width="60%" direction="column">

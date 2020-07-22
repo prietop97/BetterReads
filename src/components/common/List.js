@@ -11,6 +11,7 @@ const List = ({ LoadingComponent, RenderItems, getItemsData }) => {
   useEffect(() => {
     // Here we are performing our GET request through the use of our
     // Axios helper function that we will receive through props
+    // setItems(getItemsData());
     getItemsData()
       .then(items => {
         setItems(items);

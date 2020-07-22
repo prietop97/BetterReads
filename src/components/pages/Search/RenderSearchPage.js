@@ -18,12 +18,12 @@ const RenderSearchPage = props => (
     {props.data.map(book => (
       <Flex key={book.id} w="440px">
         <Box roundedTopLeft="lg" overflow="hidden">
-          <Image
+          {/* <Image
             src={book.volumeInfo.imageLinks.smallThumbnail}
             alt={book.volumeInfo.title}
             pb="0"
             mb="0"
-          />
+          /> */}
           <Select
             size="sm"
             icon={FaSortDown}
@@ -45,7 +45,7 @@ const RenderSearchPage = props => (
                 {book.volumeInfo.title}
               </Text>
               <Text fontSize="0.875rem" fontFamily="Frank Ruhl Libre">
-                {book.volumeInfo.authors[0]}
+                {book.volumeInfo.authors}
               </Text>
             </Box>
             <Box>
