@@ -49,10 +49,10 @@ const bookSearch = searchQuery => {
     .then(response => response.data.items);
 };
 
-const boodDetail = googleId => {
+const bookDetail = googleId => {
   return axios
     .get(`${googleBookDetailURL}/${googleId}`)
     .then(response => response.data);
 };
 
-export { sleep, getExampleData, getProfileData, bookSearch };
+export { sleep, getExampleData, getProfileData, bookSearch, bookDetail };

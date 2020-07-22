@@ -1,56 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { SearchContext } from "../../../state/context";
 
 import { Flex, Text, Input, Button, Box } from "@chakra-ui/core";
 
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 
+import { SearchBar, Header } from "../../common";
+
 function DashboardContainer() {
+  const history = useHistory();
+
+  const testSearch = "The Giver";
+  const [bookQuery, setBookQuery] = useState("");
+
+  function submitSearchQuery() {
+    history.push({ pathname: "/search", query: bookQuery });
+  }
+
   return (
     <>
-      <Flex justify="space-between" align="center" m="0rem 5rem">
-        <Text fontSize="1.5rem" color="#5c7c69">
-          Readrr
-        </Text>
-        <Box as={FaUserCircle} size="2rem" color="#7E8D88" />
-      </Flex>
-      <Flex background="#f3f6f5" p="1rem 4rem" m="0" direction="column">
-        <Text
-          m="1rem"
-          color="#3b403d"
-          fontSize="2.6rem"
-          fontFamily="Frank Ruhl Libre"
-          fontWeight="bold"
-          lineHeight="2.5rem"
-        >
-          What are you reading?
-        </Text>
-        <Text
-          margin="0 1rem"
-          color="#4e4c4a"
-          lineHeight="1.375rem"
-          fontFamily="Open Sans"
-        >
-          Search for a book that you want to track and add to shelves.
-        </Text>
-        <Flex m="1rem" align="center">
-          <Input
-            width="17rem"
-            height="2.5rem"
-            fontSize=" 1rem"
-            placeholder="Search for a book"
-            borderRadius="0.25rem 0 0 0.25rem"
-          />
-          <Box
-            as={AiOutlineSearch}
-            bg="#547862"
-            color="white"
-            size="1.7rem"
-            p="0.5rem"
-            borderRadius="0 0.25rem 0.25rem 0"
-          />
-        </Flex>
-      </Flex>
+      <Header />
+
+      <SearchContext.Provider value={{ setBookQuery, submitSearchQuery }}>
+        <SearchBar labelId="21" name="theSearch" placeholder="Find your book" />
+      </SearchContext.Provider>
+
       <Flex justify="space-between" m="1rem 4rem">
         <Flex width="60%" direction="column">
           <Text

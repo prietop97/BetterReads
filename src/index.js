@@ -52,6 +52,9 @@ function App() {
         <Route exact path="/" component={Landing} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/login" component={LoginPage} />
+
+        <Route path="/search" component={SearchResultPage} />
+
         <Route path="/implicit/callback" component={LoginCallback} />
         {/* any of the routes you need secured should be registered as SecureRoutes */}
         <SecureRoute
@@ -61,7 +64,7 @@ function App() {
         />
         <SecureRoute path="/example-list" component={ExampleListPage} />
         <SecureRoute path="/profile-list" component={ProfileListPage} />
-        <SecureRoute path="/search" component={SearchResultPage} />
+        {/* <SecureRoute path="/search" component={SearchResultPage} /> */}
         <Route component={NotFoundPage} />
       </Switch>
     </Security>

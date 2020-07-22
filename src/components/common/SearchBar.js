@@ -18,11 +18,17 @@ import {
 } from "@chakra-ui/core";
 
 import { AiOutlineSearch } from "react-icons/ai";
+import SearchContext from "../../state/context/SearchContext";
 
 const SearchBar = props => {
-  const [searchQuery, setSearchQuery] = useState();
-
   const history = useHistory();
+
+  const testSearch = "The Giver";
+  const [bookQuery, setBookQuery] = useState("");
+
+  function submitSearchQuery() {
+    history.push({ pathname: "/search", query: bookQuery });
+  }
 
   return (
     <>
@@ -46,34 +52,41 @@ const SearchBar = props => {
           Search for a book that you want to track and add to shelves.
         </Text>
         <Flex m="1rem" align="center">
-          <form
-            onSubmit={() =>
-              history.push({ pathname: "/search", query: searchQuery })
-            }
-          >
-            <Stack isInline spacing={0}>
-              <Input
-                size="md"
-                width="17rem"
-                fontSize="1rem"
-                placeholder="Search for a book"
-                borderColor="rgb(217,217,217)"
-                borderRadius="0.25rem 0 0 0.25rem"
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-              <IconButton
-                type="submit"
-                icon="search"
-                bg="#547862"
-                color="white"
-                size="1.75rem"
-                fontSize="1.5rem"
-                p="0.5rem .75rem"
-                borderRadius="0 0.25rem 0.25rem 0"
-                border="none"
-              />
-            </Stack>
-          </form>
+          <SearchContext.Consumer>
+            {value => {
+              return (
+                <form
+                  onSubmit={() => {
+                    value.submitSearchQuery();
+                  }}
+                >
+                  <Stack isInline spacing={0}>
+                    <Input
+                      size="md"
+                      width="17rem"
+                      fontSize="1rem"
+                      placeholder="Search for a book"
+                      borderColor="rgb(217,217,217)"
+                      borderRadius="0.25rem 0 0 0.25rem"
+                      onChange={e => value.setBookQuery(e.target.value)}
+                    />
+
+                    <IconButton
+                      type="submit"
+                      icon="search"
+                      bg="#547862"
+                      color="white"
+                      size="1.75rem"
+                      fontSize="1.5rem"
+                      p="0.5rem .75rem"
+                      borderRadius="0 0.25rem 0.25rem 0"
+                      border="none"
+                    />
+                  </Stack>
+                </form>
+              );
+            }}
+          </SearchContext.Consumer>
         </Flex>
       </Flex>
     </>
