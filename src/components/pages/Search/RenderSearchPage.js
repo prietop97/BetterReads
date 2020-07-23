@@ -56,7 +56,12 @@ const RenderSearchPage = props => (
                 >
                   {book.volumeInfo.title}
                 </Text>
-                <Text fontSize="1rem" fontFamily="Frank Ruhl Libre" mt="0.5rem">
+                <Text
+                  fontSize="1rem"
+                  fontFamily="Frank Ruhl Libre"
+                  mt="0.5rem"
+                  color="#4E4C4A"
+                >
                   {book.volumeInfo.authors[0]}
                 </Text>
               </Box>
