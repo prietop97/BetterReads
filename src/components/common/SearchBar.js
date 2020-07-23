@@ -32,7 +32,7 @@ const SearchBar = props => {
           <SearchContext.Consumer>
             {value => {
               return (
-                <form onSubmit={value.submitSearchQuery}>
+                <form onSubmit={value.getBookResults}>
                   <Stack isInline spacing={0}>
                     <Input
                       size="md"

@@ -1,29 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {
-  Flex,
-  Text,
-  Box,
-  Image,
-  Select,
-  Input,
-  Divider
-} from "@chakra-ui/core";
+import { Flex, Text, Box, Image, Select } from "@chakra-ui/core";
 
-import { FaRegHeart, FaRegStar, FaSortDown, FaStar } from "react-icons/fa";
+import { FaRegHeart, FaSortDown, FaStar } from "react-icons/fa";
 
 const RenderSearchPage = props => (
   <div>
     {props.data.map(book => (
       <Flex key={book.id} w="440px">
         <Box roundedTopLeft="lg" overflow="hidden">
-          {/* <Image
-            src={book.volumeInfo.imageLinks.smallThumbnail}
-            alt={book.volumeInfo.title}
-            pb="0"
-            mb="0"
-          /> */}
+          {book.volumeInfo && book.volumeInfo.imageLinks ? (
+            <Image
+              src={book.volumeInfo.imageLinks.smallThumbnail}
+              alt={book.volumeInfo.title}
+              pb="0"
+              mb="0"
+            />
+          ) : null}
           <Select
             size="sm"
             icon={FaSortDown}

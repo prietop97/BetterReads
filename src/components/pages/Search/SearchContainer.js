@@ -1,10 +1,6 @@
 import React from "react";
 
-import { bookSearch } from "../../../api";
-
-import SearchContext, {
-  SearchProvider
-} from "../../../state/context/SearchContext";
+import SearchContext from "../../../state/context/SearchContext";
 
 import { List, SearchBar, Header } from "../../common";
 import RenderSearchPage from "./RenderSearchPage";
@@ -16,12 +12,14 @@ const SearchResultsList = () => {
       <SearchBar labelId="21" name="theSearch" placeholder="Find your book" />
       <SearchContext.Consumer>
         {value => {
-          if (value.bookQuery) {
+          console.log(value.bookResults);
+          if (value.bookResults) {
             return (
               <List
-                getItemsData={() => bookSearch(value.bookQuery)}
                 LoadingComponent={() => <div>Loading results...</div>}
                 RenderItems={RenderSearchPage}
+                items={value.bookResults}
+                isFetching={value.isFetching}
               />
             );
           } else {
