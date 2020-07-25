@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const RenderExampleListPage = (props) => (
+const RenderExampleListPage = props => (
   <div>
-    {props.data.map((item) => (
+    {props.data.map(item => (
       <figure key={item.id}>
-        <img src={item.thumbnailUrl} alt={item.title} />
         <figcaption>
-          <h3>{item.title}</h3>
+          <h3>{item.id}</h3>
         </figcaption>
       </figure>
     ))}
@@ -25,7 +24,7 @@ RenderExampleListPage.propTypes = {
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
       title: PropTypes.string,
       url: PropTypes.string,
-      thumbnailUrl: PropTypes.string,
+      thumbnailUrl: PropTypes.string
     })
-  ).isRequired,
+  ).isRequired
 };

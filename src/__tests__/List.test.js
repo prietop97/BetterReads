@@ -7,11 +7,9 @@ afterEach(() => {
   cleanup();
 });
 
-const getItemsData = jest.fn(() =>
-  Promise.resolve([{ id: 1 }, { id: 2 }, { id: 3 }])
-);
-const RenderItems = jest.fn((props) =>
-  props.data.map((item) => <li key={item.id}>Item</li>)
+const itemsData = [{ id: 1 }, { id: 2 }, { id: 3 }];
+const RenderItems = jest.fn(props =>
+  props.data.map(item => <li key={item.id}>Item</li>)
 );
 
 describe("<List /> test suite", () => {
@@ -22,7 +20,8 @@ describe("<List /> test suite", () => {
       rendered = render(
         <List
           // return an unresolved promise to test initial component state
-          getItemsData={jest.fn(() => new Promise(() => {}))}
+          items={[]}
+          isFetching={true}
           LoadingComponent={() => <div>Loading...</div>}
           RenderItems={RenderItems}
         />
@@ -37,7 +36,8 @@ describe("<List /> test suite", () => {
     await act(async () => {
       rendered = await render(
         <List
-          getItemsData={getItemsData}
+          items={itemsData}
+          isFetching={true}
           LoadingComponent={() => <div>Loading...</div>}
           RenderItems={RenderItems}
         />
