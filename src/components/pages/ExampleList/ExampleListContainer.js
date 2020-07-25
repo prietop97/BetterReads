@@ -10,7 +10,8 @@ const ExampleList = () => {
   return (
     <List
       // Here we are passing our Axios request helper function as a callback.
-      getItemsData={getExampleData}
+      items={[{ id: 1 }, { id: 2 }]}
+      isFetching={false}
       // Here we are passing in a component we want to show whilst waiting for our API request
       // to complete.
       LoadingComponent={() => <div>Loading Items...</div>}
