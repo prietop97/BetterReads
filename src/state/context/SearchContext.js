@@ -10,22 +10,35 @@ export const SearchProvider = ({ children }) => {
   const location = useLocation();
 
   const [bookQuery, setBookQuery] = useState("");
+  const [bookNumber, setBookNumber] = useState(0);
   const [bookResults, setBookResults] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [additionalLoading, setAdditionalLoading] = useState(false);
 
-  function pushToSearchPage() {
-    history.push({ pathname: "/search", query: bookQuery });
-    // the line below causes a complete re-render of the app, losing all state
-  }
+  // function pushToSearchPage() {
+  //   history.push({ pathname: "/search", query: bookQuery });
+  //   // the line below causes a complete re-render of the app, losing all state
+  // }
   function getBookResults(e) {
     e.preventDefault();
     setIsFetching(true);
-    bookSearch(bookQuery).then(res => {
+    bookSearch(bookQuery, 0).then(res => {
       setBookResults(res);
       setIsFetching(false);
+      setBookNumber(res.length);
     });
+
     console.log(location.pathname);
-    if (location.pathname !== "/search") pushToSearchPage();
+    if (location.pathname !== "/search") history.push("/search");
+  }
+  function getMoreBooks(e) {
+    e.preventDefault();
+    setAdditionalLoading(true);
+    bookSearch(bookQuery, bookNumber).then(res => {
+      setBookResults([...bookResults, ...res]);
+      setAdditionalLoading(false);
+      setBookNumber(bookNumber + res.length);
+    });
   }
 
   return (
@@ -35,8 +48,9 @@ export const SearchProvider = ({ children }) => {
         setBookQuery,
         bookResults,
         isFetching,
-        setIsFetching,
-        getBookResults
+        getBookResults,
+        getMoreBooks,
+        additionalLoading
       }}
     >
       {children}

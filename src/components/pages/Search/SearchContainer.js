@@ -1,32 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import SearchContext from "../../../state/context/SearchContext";
 
-import { List, SearchBar, Header } from "../../common";
+import { List, SearchBar, Header, Button } from "../../common";
 import RenderSearchPage from "./RenderSearchPage";
 
 const SearchResultsList = () => {
+  const searchContext = useContext(SearchContext);
+  const { bookResults, isFetching, getMoreBooks } = searchContext;
   return (
     <>
       <Header />
       <SearchBar labelId="21" name="theSearch" placeholder="Find your book" />
-      <SearchContext.Consumer>
-        {value => {
-          console.log(value.bookResults);
-          if (value.bookResults) {
-            return (
-              <List
-                LoadingComponent={() => <div>Loading results...</div>}
-                RenderItems={RenderSearchPage}
-                items={value.bookResults}
-                isFetching={value.isFetching}
-              />
-            );
-          } else {
-            return <div>Nothing to search for. Try again.</div>;
-          }
-        }}
-      </SearchContext.Consumer>
+      {bookResults ? (
+        <>
+          <List
+            LoadingComponent={() => <div>Loading results...</div>}
+            RenderItems={RenderSearchPage}
+            items={bookResults}
+            isFetching={isFetching}
+          />
+          <Button buttonText="Load More" handleClick={getMoreBooks} />
+        </>
+      ) : (
+        <div>Nothing to search for. Try again.</div>
+      )}
     </>
   );
 };

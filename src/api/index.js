@@ -43,10 +43,13 @@ const getProfileData = authState => {
   }
 };
 
-const bookSearch = searchQuery => {
+const bookSearch = (searchQuery, startIndex) => {
   return axios
-    .get(`${googleAPIURL}?q=${searchQuery}`)
-    .then(response => response.data.items);
+    .get(`${googleAPIURL}?q=${searchQuery}&startIndex=${startIndex}`)
+    .then(response => {
+      console.log(response);
+      return response.data.items;
+    });
 };
 
 const bookDetail = googleId => {
