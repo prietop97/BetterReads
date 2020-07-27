@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useMemo } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { bookSearch } from "../../api";
@@ -9,48 +9,46 @@ export const SearchProvider = ({ children }) => {
   const history = useHistory();
   const location = useLocation();
 
-  const [bookQuery, setBookQuery] = useState("");
-  const [bookNumber, setBookNumber] = useState(0);
-  const [bookResults, setBookResults] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [additionalLoading, setAdditionalLoading] = useState(false);
+  const [searchState, setSearchState] = useState({
+    bookQuery: "",
+    bookNumber: 0,
+    bookResults: [],
+    isFetching: false,
+    additionalLoading: false
+  });
 
-  // function pushToSearchPage() {
-  //   history.push({ pathname: "/search", query: bookQuery });
-  //   // the line below causes a complete re-render of the app, losing all state
-  // }
   function getBookResults(e) {
     e.preventDefault();
-    setIsFetching(true);
-    bookSearch(bookQuery, 0).then(res => {
-      setBookResults(res);
-      setIsFetching(false);
-      setBookNumber(res.length);
+    setSearchState({ ...searchState, isFetching: true });
+    bookSearch(searchState.bookQuery, 0).then(res => {
+      setSearchState({
+        ...searchState,
+        bookResults: res,
+        isFetching: false,
+        bookNumber: res.length + 1
+      });
+      if (location.pathname !== "/search") history.push("/search");
     });
-
-    console.log(location.pathname);
-    if (location.pathname !== "/search") history.push("/search");
   }
   function getMoreBooks(e) {
-    e.preventDefault();
-    setAdditionalLoading(true);
-    bookSearch(bookQuery, bookNumber).then(res => {
-      setBookResults([...bookResults, ...res]);
-      setAdditionalLoading(false);
-      setBookNumber(bookNumber + res.length);
+    setSearchState({ ...searchState, additionalLoading: true });
+    bookSearch(searchState.bookQuery, searchState.bookNumber).then(res => {
+      setSearchState({
+        ...searchState,
+        bookResults: [...searchState.bookResults, ...res],
+        additionalLoading: false,
+        bookNumber: res.length + searchState.bookNumber
+      });
     });
   }
 
   return (
     <SearchContext.Provider
       value={{
-        bookQuery,
-        setBookQuery,
-        bookResults,
-        isFetching,
+        searchState,
+        setSearchState,
         getBookResults,
-        getMoreBooks,
-        additionalLoading
+        getMoreBooks
       }}
     >
       {children}

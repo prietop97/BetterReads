@@ -41,7 +41,12 @@ const SearchBar = props => {
                       placeholder="Search for a book"
                       borderColor="rgb(217,217,217)"
                       borderRadius="0.25rem 0 0 0.25rem"
-                      onChange={e => value.setBookQuery(e.target.value)}
+                      onChange={e =>
+                        value.setSearchState({
+                          ...value.searchState,
+                          bookQuery: e.target.value
+                        })
+                      }
                     />
 
                     <IconButton
