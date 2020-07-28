@@ -48,7 +48,7 @@ const bookSearch = (searchQuery, startIndex) => {
     .get(`${googleAPIURL}?q=${searchQuery}&startIndex=${startIndex}`)
     .then(response => {
       console.log(response);
-      return response.data.items;
+      return response.data;
     });
 };
 

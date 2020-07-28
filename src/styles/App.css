@@ -1,18 +1,30 @@
-.bookContainer{
-    display: flex;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bookContainer {
+  display: flex;
 }
 
 .bookContainer .bookThumbStatus {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.bookContainer .bookDetails{
-    display: flex;
-    flex-direction: column;   
+.bookContainer .bookDetails {
+  display: flex;
+  flex-direction: column;
 }
 
-.bookContainer .bookDetails .bookTitleFavIcon{
-    display: flex;
-    flex-direction: row;
+.bookContainer .bookDetails .bookTitleFavIcon {
+  display: flex;
+  flex-direction: row;
 }

@@ -10,7 +10,7 @@ const List = ({ LoadingComponent, RenderItems, items, isFetching }) => {
   // Here we return a loading component while our request is fetching
   // or we render our list of items from the data we receive from our successful request
   // We can change and swap these out through props!
-  return <RenderItems data={items} />;
+  return isFetching ? <LoadingComponent /> : <RenderItems data={items} />;
 };
 
 export default List;

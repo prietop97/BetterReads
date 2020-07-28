@@ -14,7 +14,9 @@ export const SearchProvider = ({ children }) => {
     bookNumber: 0,
     bookResults: [],
     isFetching: false,
-    additionalLoading: false
+    additionalLoading: false,
+    totalBooks: 0,
+    fetchMore: true
   });
 
   function getBookResults(e) {
@@ -23,9 +25,11 @@ export const SearchProvider = ({ children }) => {
     bookSearch(searchState.bookQuery, 0).then(res => {
       setSearchState({
         ...searchState,
-        bookResults: res,
+        bookResults: res.items,
         isFetching: false,
-        bookNumber: res.length + 1
+        bookNumber: res.items.length + 1,
+        totalBooks: res.totalItems,
+        fetchMore: res.items.length <= res.totalItems
       });
       if (location.pathname !== "/search") history.push("/search");
     });
@@ -35,9 +39,11 @@ export const SearchProvider = ({ children }) => {
     bookSearch(searchState.bookQuery, searchState.bookNumber).then(res => {
       setSearchState({
         ...searchState,
-        bookResults: [...searchState.bookResults, ...res],
+        bookResults: [...searchState.bookResults, ...res.items],
         additionalLoading: false,
-        bookNumber: res.length + searchState.bookNumber
+        bookNumber: res.items.length + searchState.bookNumber,
+        fetchMore:
+          res.items.length + searchState.bookResults.length <= res.totalItems
       });
     });
   }
