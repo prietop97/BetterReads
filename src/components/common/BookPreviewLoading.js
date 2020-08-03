@@ -4,7 +4,7 @@ import { Flex, Box, Skeleton } from "@chakra-ui/core";
 export default function BookPreviewLoading() {
   return (
     <Flex
-      w="430px"
+      w={["100%", "100%", "100%", "47%"]}
       margin="1rem 0"
       padding="1rem 0"
       borderBottom="1px solid rgb(217,217,217)"
