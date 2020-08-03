@@ -8,6 +8,7 @@ import RenderSearchPage from "./RenderSearchPage";
 import Container from "../../common/Container";
 import BooksPreviewLoading from "./BooksPreviewLoading";
 import Breadcrumb from "../../common/BreadCrumb";
+import SideShelves from "../../common/SideShelves";
 
 const SearchResultsList = () => {
   const searchContext = useContext(SearchContext);
@@ -17,7 +18,6 @@ const SearchResultsList = () => {
     totalBooks,
     bookQuery
   } = searchContext.searchState;
-  const { getMoreBooks } = searchContext;
   console.log("RUNNING");
   return (
     <>
@@ -46,6 +46,7 @@ const SearchResultsList = () => {
           ) : (
             <RenderSearchPage data={bookResults} />
           )}
+          <SideShelves />
         </Flex>
       </Container>
     </>

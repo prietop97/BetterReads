@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
 
@@ -10,6 +10,19 @@ const SearchBar = props => {
   const { searchState, getBookResults, setSearchState } = useContext(
     SearchContext
   );
+  const [formState, setFormState] = useState("");
+
+  const handleChange = e => {
+    setFormState(e.target.value);
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    setSearchState({ ...searchState, bookQuery: formState });
+  };
+
+  useEffect(() => {
+    if (searchState.bookQuery && formState) getBookResults();
+  }, [searchState.bookQuery]);
   return (
     <>
       <Flex background="#f3f6f5" p="1rem 4rem" m="0" direction="column">
@@ -32,22 +45,17 @@ const SearchBar = props => {
           Search for a book that you want to track and add to shelves.
         </Text>
         <Flex m="1rem" align="center">
-          <form onSubmit={getBookResults}>
+          <form onSubmit={handleSubmit}>
             <Stack isInline spacing={0}>
               <Input
                 size="md"
                 width="17rem"
-                value={searchState.bookQuery}
+                value={formState}
                 fontSize="1rem"
                 placeholder="Search for a book"
                 borderColor="rgb(217,217,217)"
                 borderRadius="0.25rem 0 0 0.25rem"
-                onChange={e =>
-                  setSearchState({
-                    ...searchState,
-                    bookQuery: e.target.value
-                  })
-                }
+                onChange={handleChange}
               />
 
               <IconButton

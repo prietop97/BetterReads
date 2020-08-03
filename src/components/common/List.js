@@ -5,8 +5,6 @@ import PropTypes from "prop-types";
 // We are passing all of its functions through props to keep our component clean & testable
 // Feel free to add to this component with some more advanced features of your own
 const List = ({ LoadingComponent, RenderItems, items, isFetching }) => {
-  console.log(items);
-  console.log(isFetching);
   // Here we return a loading component while our request is fetching
   // or we render our list of items from the data we receive from our successful request
   // We can change and swap these out through props!

@@ -9,7 +9,11 @@ import BookPreview from "../../common/BookPreview";
 const RenderSearchPage = props => {
   const searchContext = useContext(SearchContext);
   const { getMoreBooks } = searchContext;
-  const { additionalLoading, isFetching } = searchContext.searchState;
+  const {
+    additionalLoading,
+    isFetching,
+    fetchMore
+  } = searchContext.searchState;
   return (
     <Flex
       direction="row"
@@ -20,7 +24,7 @@ const RenderSearchPage = props => {
       {props.data.map(book => (
         <BookPreview key={book.id} book={book} isFetching={isFetching} />
       ))}
-      {props.data.length ? (
+      {props.data.length && fetchMore ? (
         <Button
           isLoading={additionalLoading}
           fontWeight="500"

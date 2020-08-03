@@ -19,18 +19,32 @@ export const SearchProvider = ({ children }) => {
     fetchMore: true
   });
 
-  function getBookResults(e) {
-    e.preventDefault();
-    setSearchState({ ...searchState, isFetching: true });
+  function getBookResults() {
+    setSearchState({
+      ...searchState,
+      isFetching: true,
+      bookNumber: 0,
+      totalBooks: 0
+    });
     bookSearch(searchState.bookQuery, 0).then(res => {
-      setSearchState({
-        ...searchState,
-        bookResults: res.items,
-        isFetching: false,
-        bookNumber: res.items.length + 1,
-        totalBooks: res.totalItems,
-        fetchMore: res.items.length <= res.totalItems
-      });
+      console.log(res);
+      if (res.items) {
+        setSearchState({
+          ...searchState,
+          bookResults: res.items,
+          isFetching: false,
+          bookNumber: res.items.length + 1,
+          totalBooks: res.totalItems,
+          fetchMore: res.items.length < res.totalItems
+        });
+      } else {
+        setSearchState({
+          ...searchState,
+          bookResults: [],
+          isFetching: false,
+          fetchMore: false
+        });
+      }
       if (location.pathname !== "/search") history.push("/search");
     });
   }
