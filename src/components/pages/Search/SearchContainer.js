@@ -18,7 +18,6 @@ const SearchResultsList = () => {
     totalBooks,
     bookQuery
   } = searchContext.searchState;
-  console.log("RUNNING");
   return (
     <>
       <Header />

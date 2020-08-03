@@ -10,19 +10,23 @@ const SearchBar = props => {
   const { searchState, getBookResults, setSearchState } = useContext(
     SearchContext
   );
-  const [formState, setFormState] = useState("");
+  const [formError, setFormError] = useState("");
 
   const handleChange = e => {
-    setFormState(e.target.value);
+    setSearchState({ ...searchState, bookQuery: e.target.value });
   };
   const handleSubmit = e => {
     e.preventDefault();
-    setSearchState({ ...searchState, bookQuery: formState });
+    if (searchState.bookQuery.length === 0) {
+      setFormError("You must provide a name of a book or author");
+      setTimeout(() => {
+        setFormError("");
+      }, 2000);
+      return;
+    }
+    getBookResults();
   };
 
-  useEffect(() => {
-    if (searchState.bookQuery && formState) getBookResults();
-  }, [searchState.bookQuery]);
   return (
     <>
       <Flex background="#f3f6f5" p="1rem 4rem" m="0" direction="column">
@@ -50,7 +54,7 @@ const SearchBar = props => {
               <Input
                 size="md"
                 width="17rem"
-                value={formState}
+                value={searchState.bookQuery}
                 fontSize="1rem"
                 placeholder="Search for a book"
                 borderColor="rgb(217,217,217)"
@@ -71,6 +75,14 @@ const SearchBar = props => {
                 border="none"
               />
             </Stack>
+            <Text
+              margin="0.2rem 0"
+              color="#8B0000"
+              lineHeight="1.375rem"
+              fontFamily="Open Sans"
+            >
+              {formError}
+            </Text>
           </form>
         </Flex>
       </Flex>
