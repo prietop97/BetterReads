@@ -43,7 +43,7 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UsernamePasswordInput,
-    @Ctx() { em }: MyContext
+    @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
     if (options.username.length <= 2) {
       console.log("hello");
@@ -80,30 +80,39 @@ export class UserResolver {
         };
       }
     }
+    req.session!.userId = user.id;
     return { user };
   }
 
   @Mutation(() => UserResponse)
   async login(
     @Arg("options") options: UsernamePasswordInput,
-    @Ctx() { em }: MyContext
+    @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
     const user = await em.findOne(User, { username: options.username });
-    console.log("USER", user);
     if (!user) {
       return {
         errors: [{ field: "username", message: "that username doesn't exist" }],
       };
     }
     const valid = await argon2.verify(user.password, options.password);
-    console.log("HERE");
     if (!valid) {
       return {
         errors: [{ field: "password", message: "incorrect password" }],
       };
     }
+    req.session!.userId = user.id;
     return {
       user,
     };
+  }
+
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { em, req }: MyContext): Promise<User | null> {
+    if (!req.session.userId) {
+      return null;
+    }
+    const user = await em.findOne(User, { id: req.session.userId });
+    return user;
   }
 }
