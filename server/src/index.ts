@@ -11,6 +11,7 @@ import redis from "redis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { __prod__ } from "./constants";
+import cors from "cors";
 
 const main = async () => {
   // SETTING UP DATABASE AND MIGRATING
@@ -22,7 +23,12 @@ const main = async () => {
   const redisClient = redis.createClient();
 
   const app = express();
-
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3000",
+    })
+  );
   // SETTING SESSIONS SETTINGS
   app.use(
     session({
@@ -51,7 +57,10 @@ const main = async () => {
     }),
     context: ({ req, res }) => ({ em: orm.em, req, res }),
   });
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({
+    app,
+    cors: false,
+  });
   app.listen(4000, () => {
     console.log("Server started on localhost:4000");
   });
