@@ -7,12 +7,14 @@ import {
   Arg,
   Ctx,
   ObjectType,
+  UseMiddleware,
 } from "type-graphql";
 import { MyContext } from "src/types";
 import { User } from "../entities/User";
 import argon2 from "argon2";
-import { EntityManager } from "@mikro-orm/postgresql";
 import { COOKIE_NAME } from "../constants";
+import { getConnection } from "typeorm";
+import { isAuth } from "../middleware/isAuth";
 
 @InputType()
 class UsernamePasswordInput {
@@ -47,7 +49,7 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UsernamePasswordInput,
-    @Ctx() { em, req }: MyContext
+    @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     if (options.email.length <= 2) {
       return {
@@ -82,18 +84,18 @@ export class UserResolver {
     const hashedPassword = await argon2.hash(options.password);
     let user;
     try {
-      const result = await (em as EntityManager)
-        .createQueryBuilder(User)
-        .getKnexQuery()
-        .insert({
+      const result = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values({
           name: options.name,
           email: options.email,
           password: hashedPassword,
-          created_at: new Date(),
-          updated_at: new Date(),
         })
-        .returning("*");
-      user = result[0];
+        .returning("*")
+        .execute();
+      user = result.raw[0];
     } catch (error) {
       if (error.code === "23505") {
         return {
@@ -103,15 +105,15 @@ export class UserResolver {
     }
     req.session!.userId = user.id;
     console.log(user);
-    return { user: { ...user, createdAt: user.created_at } };
+    return { user };
   }
 
   @Mutation(() => UserResponse)
   async login(
     @Arg("options") options: UsernamePasswordInput,
-    @Ctx() { em, req }: MyContext
+    @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
-    const user = await em.findOne(User, { email: options.email });
+    const user = await User.findOne({ where: { email: options.email } });
     if (!user) {
       return {
         errors: [{ field: "email", message: "Incorrect email" }],
@@ -130,12 +132,12 @@ export class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
-  async me(@Ctx() { em, req }: MyContext): Promise<User | null> {
+  @UseMiddleware(isAuth)
+  async me(@Ctx() { req }: MyContext): Promise<User | undefined> {
     if (!req.session.userId) {
-      return null;
+      return undefined;
     }
-    const user = await em.findOne(User, { id: req.session.userId });
-    return user;
+    return await User.findOne(req.session.userId);
   }
 
   @Mutation(() => Boolean)

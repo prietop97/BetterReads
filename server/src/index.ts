@@ -1,6 +1,4 @@
 import "reflect-metadata";
-import { MikroORM } from "@mikro-orm/core";
-import microConfig from "./mikro-orm.config";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -12,12 +10,25 @@ import session from "express-session";
 import connectRedis from "connect-redis";
 import { __prod__, COOKIE_NAME } from "./constants";
 import cors from "cors";
+import { createConnection } from "typeorm";
+import { Book } from "./entities/Book";
+import { User } from "./entities/User";
+import { Bookshelf } from "./entities/Bookshelf";
+import { UserBook } from "./entities/UserBook";
+import { BookshelvesUserBook } from "./entities/BookshelvesUserBook";
+import { UserBookResolver } from "./resolvers/userBook";
 
 const main = async () => {
   // SETTING UP DATABASE AND MIGRATING
-  const orm = await MikroORM.init(microConfig);
-  await orm.getMigrator().up();
-
+  await createConnection({
+    type: "postgres",
+    database: "betterreads",
+    username: "postgres",
+    password: "Blackbox123",
+    logging: true,
+    synchronize: true,
+    entities: [Book, User, Bookshelf, UserBook, BookshelvesUserBook],
+  });
   // SETTING UP REDIS STORE FOR USER SESSIONS
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
@@ -52,10 +63,10 @@ const main = async () => {
   // CREATING THE APOLLO SERVER, THIS IS WHERE RESOLVERS RESIDE.
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, BookResolver, UserResolver],
+      resolvers: [HelloResolver, BookResolver, UserResolver, UserBookResolver],
       validate: false,
     }),
-    context: ({ req, res }) => ({ em: orm.em, req, res }),
+    context: ({ req, res }) => ({ req, res }),
   });
   apolloServer.applyMiddleware({
     app,

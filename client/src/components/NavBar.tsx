@@ -90,7 +90,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
             <Text
               fontSize="1.6rem"
               fontWeight={700}
-              color="#5c7c69"
+              color="Teal"
               textDecoration="none"
               cursor="pointer"
             >
