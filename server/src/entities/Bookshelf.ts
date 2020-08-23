@@ -5,15 +5,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  ManyToOne,
   OneToMany,
 } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
-import { Bookshelf } from "./Bookshelf";
-import { UserBook } from "./UserBook";
+import { User } from "./User";
+import { BookshelvesUserBook } from "./BookshelvesUserBook";
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class Bookshelf extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -24,22 +25,19 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @UpdateDateColumn()
-  updatedAt: Date;
-
-  @Field()
-  @Column({ unique: true })
-  email!: string;
-
-  @Column()
-  password!: string;
+  updatedAt = new Date();
 
   @Field()
   @Column()
   name!: string;
 
-  @OneToMany(() => Bookshelf, (bookshelf) => bookshelf.user)
-  bookshelves: Bookshelf[];
+  @Field()
+  @Column()
+  userId: number;
 
-  @OneToMany(() => UserBook, (userBook) => userBook.user)
-  books: UserBook[];
+  @ManyToOne(() => User, (user) => user.bookshelves)
+  user!: User;
+
+  @OneToMany(() => BookshelvesUserBook, (bu) => bu.bookshelf)
+  bookshelvesUserBooks: BookshelvesUserBook[];
 }

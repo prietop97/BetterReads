@@ -1,48 +1,56 @@
-import { Resolver, Query, Ctx, Arg, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, InputType, Field } from "type-graphql";
 import { Book } from "../entities/Book";
-import { MyContext } from "src/types";
+
+@InputType()
+class Options {
+  @Field()
+  title!: string;
+  @Field()
+  googleId!: string;
+  @Field()
+  author!: string;
+  @Field()
+  thumbnail!: string;
+}
 
 @Resolver()
 export class BookResolver {
   @Query(() => [Book])
-  books(@Ctx() { em }: MyContext): Promise<Book[]> {
-    return em.find(Book, {});
+  books(): Promise<Book[]> {
+    return Book.find();
   }
 
   @Query(() => Book, { nullable: true })
-  book(@Arg("id") id: number, @Ctx() { em }: MyContext): Promise<Book | null> {
-    return em.findOne(Book, { id });
+  book(@Arg("id") id: number): Promise<Book | undefined> {
+    return Book.findOne(id);
   }
 
   @Mutation(() => Book)
   async createBook(
-    @Arg("title") title: string,
-    @Ctx() { em }: MyContext
-  ): Promise<Book | null> {
-    const book = em.create(Book, { title });
-    await em.persistAndFlush(book);
-    return book;
+    @Arg("options", () => Options) options: Options
+  ): Promise<Book> {
+    return Book.create(options).save();
   }
 
   @Mutation(() => Book, { nullable: true })
   async updateBook(
     @Arg("id") id: number,
-    @Arg("title", () => String, { nullable: true }) title: string,
-    @Ctx() { em }: MyContext
+    @Arg("options", () => Options) options: Options
   ): Promise<Book | null> {
-    const book = await em.findOne(Book, { id });
+    const book = await Book.findOne(id);
     if (!book) return null;
-    if (typeof title !== "undefined") book.title = title;
-    await em.persistAndFlush(book);
+    if (typeof options.title !== "undefined") book.title = options.title;
+    if (typeof options.author !== "undefined") book.author = options.author;
+    if (typeof options.thumbnail !== "undefined")
+      book.thumbnail = options.thumbnail;
+
+    await Book.update(id, book);
     return book;
   }
 
   @Mutation(() => Boolean)
-  async deleteBook(
-    @Arg("id") id: number,
-    @Ctx() { em }: MyContext
-  ): Promise<boolean> {
-    await em.nativeDelete(Book, { id });
+  async deleteBook(@Arg("id") id: number): Promise<boolean> {
+    await Book.delete(id);
     return true;
   }
 }
