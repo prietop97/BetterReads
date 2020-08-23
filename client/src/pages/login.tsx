@@ -3,15 +3,16 @@ import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
 import { Wrapper } from "../components/Wrapper";
 import { InputField } from "../components/InputField";
-import { useLoginMutation } from "../generated/graphql";
+import { useLoginMutation, MeDocument, MeQuery } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { Button } from "@chakra-ui/core";
+import { withApollo } from "../utils/withApollo";
 
 interface loginProps {}
 
 const Login: React.FC<loginProps> = ({}) => {
   const router = useRouter();
-  const [, login] = useLoginMutation();
+  const [login] = useLoginMutation();
   return (
     <Wrapper variant="small">
       <Formik
@@ -21,11 +22,22 @@ const Login: React.FC<loginProps> = ({}) => {
         }}
         onSubmit={async (values, { setErrors }) => {
           console.log(values);
-          const response = await login(values);
+          const response = await login({
+            variables: values,
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.login.user,
+                },
+              });
+            },
+          });
           console.log(response);
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
-          } else if (response.data.login.user) {
+          } else if (response.data?.login.user) {
             router.push("/home");
           }
         }}
@@ -49,7 +61,7 @@ const Login: React.FC<loginProps> = ({}) => {
               isFullWidth
               variantColor="blue"
             >
-              Register
+              Login
             </Button>
           </Form>
         )}
@@ -57,4 +69,4 @@ const Login: React.FC<loginProps> = ({}) => {
     </Wrapper>
   );
 };
-export default Login;
+export default withApollo({ ssr: false })(Login);
