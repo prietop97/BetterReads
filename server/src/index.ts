@@ -24,7 +24,7 @@ const main = async () => {
     type: "postgres",
     database: "betterreads",
     username: "postgres",
-    password: "Blackbox123",
+    password: process.env.DB_PASSWORD,
     logging: true,
     synchronize: true,
     entities: [Book, User, Bookshelf, UserBook, BookshelvesUserBook],
