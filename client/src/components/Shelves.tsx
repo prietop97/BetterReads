@@ -6,13 +6,13 @@ interface ShelvesProps {
 }
 
 export const Shelves: React.FC<ShelvesProps> = ({ showShelfSmall = true }) => {
-  const show = () => {
-    return showShelfSmall ? "20%" : "0";
-  };
+  // const show = () => {
+  //   return showShelfSmall ? "20%" : "0";
+  // };
   return (
     <Flex
       direction="column"
-      w={["100%", "100%", "100%", show()]}
+      w={["100%", "100%", "100%", "20%"]}
       my={["2rem", "2rem", "2rem", "0rem"]}
       // display={showShelfSmall ? "flex" : "none"}
     >

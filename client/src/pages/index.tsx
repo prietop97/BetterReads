@@ -5,8 +5,6 @@ import { GiBookshelf } from "react-icons/gi";
 import { AiFillExperiment } from "react-icons/ai";
 import { FaBookReader } from "react-icons/fa";
 import { withApollo } from "../utils/withApollo";
-import { BookSVG } from "../components/BookSVG";
-import { ReadingSVG } from "../components/ReadingSVG";
 interface indexProps {}
 
 const Index: React.FC<indexProps> = ({}) => {
@@ -34,7 +32,7 @@ const Index: React.FC<indexProps> = ({}) => {
           </Button>
         </Flex>
         <Image
-          as={BookSVG}
+          src="/book.svg"
           alt="illustration of someone reading on top of a pile of books with a plant in the corner"
           // width="90rem"
           size="30rem"
@@ -146,7 +144,7 @@ const Index: React.FC<indexProps> = ({}) => {
         </Flex>
 
         <Image
-          as={ReadingSVG}
+          src="/reading.svg"
           alt="illustration of someone reading a book under a lamp"
           width="600"
         />
