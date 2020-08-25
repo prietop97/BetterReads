@@ -1,0 +1,3 @@
+mutation deleteBookshelf($id: Float!) {
+  deleteBookshelf(id: $id)
+}

@@ -1,0 +1,6 @@
+mutation updateBookshelf($name: String!, $id: Float!) {
+  updateBookshelf(id: $id, options: { name: $name }) {
+    id
+    name
+  }
+}

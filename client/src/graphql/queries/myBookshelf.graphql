@@ -1,0 +1,21 @@
+query MyBookshelf($name: String!) {
+  myBookshelf(name: $name) {
+    id
+    name
+    bookshelvesUserBooks {
+      userBook {
+        id
+        readingStatus
+        favorited
+        rating
+        book {
+          id
+          googleId
+          author
+          thumbnail
+          title
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+mutation createBookshelf($name: String!) {
+  createBookshelf(options: { name: $name }) {
+    id
+    name
+  }
+}

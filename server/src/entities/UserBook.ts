@@ -18,11 +18,11 @@ import { BookshelvesUserBook } from "./BookshelvesUserBook";
 export class UserBook extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id!: number;
+  id?: number;
 
   @Field()
   @Column({ default: "To Read" })
-  readingStatus!: string;
+  readingStatus: string;
 
   @Field()
   @Column({ default: false })
@@ -30,7 +30,7 @@ export class UserBook extends BaseEntity {
 
   @Field(() => Number, { nullable: true })
   @Column({ nullable: true })
-  rating!: number;
+  rating: number;
 
   @Field()
   @Column()

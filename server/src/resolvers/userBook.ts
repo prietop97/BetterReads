@@ -47,6 +47,11 @@ export class UserBookResolver {
     @Ctx() { req }: MyContext
   ): Promise<UserBook> {
     const book = await Book.findOne(options.bookId);
+    const userBook = await UserBook.findOne({
+      where: { bookId: book!.id, userId: req.session.userId },
+      relations: ["book"],
+    });
+    if (userBook) return userBook;
     return UserBook.create({
       ...options,
       userId: req.session.userId,

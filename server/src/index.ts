@@ -17,6 +17,7 @@ import { Bookshelf } from "./entities/Bookshelf";
 import { UserBook } from "./entities/UserBook";
 import { BookshelvesUserBook } from "./entities/BookshelvesUserBook";
 import { UserBookResolver } from "./resolvers/userBook";
+import { BookshelfResolver } from "./resolvers/bookshelf";
 
 const main = async () => {
   // SETTING UP DATABASE AND MIGRATING
@@ -63,7 +64,13 @@ const main = async () => {
   // CREATING THE APOLLO SERVER, THIS IS WHERE RESOLVERS RESIDE.
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, BookResolver, UserResolver, UserBookResolver],
+      resolvers: [
+        HelloResolver,
+        BookshelfResolver,
+        BookResolver,
+        UserResolver,
+        UserBookResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),

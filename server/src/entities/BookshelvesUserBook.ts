@@ -15,17 +15,17 @@ import { Bookshelf } from "./Bookshelf";
 export class BookshelvesUserBook extends BaseEntity {
   @Field()
   @PrimaryColumn()
-  bookshelfId: number;
+  bookshelfId?: number;
 
-  @Field()
+  @Field(() => Number, { nullable: true })
   @PrimaryColumn()
-  userBookId: number;
+  userBookId?: number;
 
-  @Field(() => UserBook)
+  @Field(() => UserBook, { nullable: true })
   @ManyToOne(() => UserBook, (book) => book.bookshelvesUserBooks)
-  userBook: UserBook;
+  userBook!: UserBook;
 
-  @Field(() => Bookshelf)
+  @Field(() => Bookshelf, { nullable: true })
   @ManyToOne(() => Bookshelf, (book) => book.bookshelvesUserBooks)
   bookshelf: Bookshelf;
 

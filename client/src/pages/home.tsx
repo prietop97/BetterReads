@@ -7,21 +7,21 @@ import { Wrapper } from "../components/Wrapper";
 import { Shelves } from "../components/Shelves";
 import { Flex, Box } from "@chakra-ui/core";
 import { PageLayout } from "../components/PageLayout";
+import { useMyBooksQuery } from "../generated/graphql";
 
 interface homeProps {}
 
 const Home: React.FC<homeProps> = ({}) => {
+  const { data, loading } = useMyBooksQuery();
+  const toRead = data?.myBooks.filter((x) => x.readingStatus === "To Be Read");
+  const reading = data?.myBooks.filter((x) => x.readingStatus === "Reading");
   return (
     <>
       <NavBar />
       <SearchBooks />
       <PageLayout>
-        <Box>
-          <HomeLibrary library="Reading" />
-        </Box>
-        <Box mt="2rem">
-          <HomeLibrary library="To Read" />
-        </Box>
+        <HomeLibrary library="Reading" books={reading} />
+        <HomeLibrary library="To Read" books={toRead} />
       </PageLayout>
     </>
   );
