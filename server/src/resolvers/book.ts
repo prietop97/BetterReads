@@ -29,6 +29,8 @@ export class BookResolver {
   async createBook(
     @Arg("options", () => Options) options: Options
   ): Promise<Book> {
+    const book = await Book.findOne({ where: { googleId: options.googleId } });
+    if (book) return book;
     return Book.create(options).save();
   }
 

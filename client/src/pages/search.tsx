@@ -3,11 +3,21 @@ import { NavBar } from "../components/NavBar";
 import { SearchBooks } from "../components/SearchBooks";
 import { withApollo } from "../utils/withApollo";
 import { PageLayout } from "../components/PageLayout";
-import { Flex, Button } from "@chakra-ui/core";
+import {
+  Flex,
+  Button,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Icon,
+  IconButton,
+} from "@chakra-ui/core";
 import { NextPage } from "next";
-import { setLazyProp } from "next/dist/next-server/server/api-utils";
 import { BookCard } from "../components/BookCard";
 import { useRouter } from "next/router";
+import { Wrapper } from "../components/Wrapper";
+import Link from "next/link";
+import { AiOutlineHome } from "react-icons/ai";
 
 interface searchProps {}
 
@@ -62,6 +72,26 @@ const Search: NextPage<any> = (props) => {
     <>
       <NavBar />
       <SearchBooks />
+      <Wrapper>
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <IconButton
+              onClick={() => router.push("/home")}
+              backgroundColor="transparent"
+              outline="none"
+              _focus={{ border: 0 }}
+              _hover={{ backgroundColor: "transparent" }}
+              _active={{ outline: "none" }}
+              icon={AiOutlineHome}
+              aria-label="Navigate Home"
+            />
+            <BreadcrumbLink href="home">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink href="#">Search</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+      </Wrapper>
       <PageLayout showShelfSmall={false}>
         <Flex direction="row" justifyContent="space-between" flexWrap="wrap">
           {results.map((book: any) => (

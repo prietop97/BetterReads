@@ -10,8 +10,9 @@ import {
 } from "type-graphql";
 import { isAuth } from "../middleware/isAuth";
 import { MyContext } from "../types";
-import { Bookshelf } from "src/entities/Bookshelf";
-import { BookshelvesUserBook } from "src/entities/BookshelvesUserBook";
+import { Bookshelf } from "../entities/Bookshelf";
+import { BookshelvesUserBook } from "../entities/BookshelvesUserBook";
+import { UserBook } from "../entities/UserBook";
 
 @InputType()
 class BookshelfOptions {
@@ -21,26 +22,42 @@ class BookshelfOptions {
 
 @Resolver()
 export class BookshelfResolver {
-  @Query(() => [Bookshelf])
+  @Query(() => [Bookshelf], { nullable: true })
   @UseMiddleware(isAuth)
-  myBookshelves(@Ctx() { req }: MyContext): Promise<Bookshelf[]> {
-    return Bookshelf.find({
+  async myBookshelves(@Ctx() { req }: MyContext): Promise<Bookshelf[]> {
+    const bookshelves = await Bookshelf.find({
       where: { userId: req.session.userId },
-      relations: ["bookshelvesUserBooks"],
+      relations: [
+        "bookshelvesUserBooks",
+        "bookshelvesUserBooks.userBook",
+        "bookshelvesUserBooks.userBook.book",
+      ],
     });
+    console.log(bookshelves[0].bookshelvesUserBooks[0].userBook.book);
+    return bookshelves;
   }
 
   @Query(() => Bookshelf, { nullable: true })
-  async myBook(@Arg("id") id: number): Promise<Bookshelf | undefined> {
-    return Bookshelf.findOne(id, { relations: ["bookshelvesUserBooks"] });
+  async myBookshelf(@Arg("name") name: string): Promise<Bookshelf | undefined> {
+    return Bookshelf.findOne({
+      where: { name },
+      relations: [
+        "bookshelvesUserBooks",
+        "bookshelvesUserBooks.userBook",
+        "bookshelvesUserBooks.userBook.book",
+      ],
+    });
   }
 
   @Mutation(() => Bookshelf)
-  async createUserBook(
-    @Arg("options", () => BookshelfOptions) options: BookshelfOptions
+  @UseMiddleware(isAuth)
+  async createBookshelf(
+    @Arg("options", () => BookshelfOptions) options: BookshelfOptions,
+    @Ctx() { req }: MyContext
   ): Promise<Bookshelf> {
     return Bookshelf.create({
       ...options,
+      userId: req.session.userId,
     }).save();
   }
 
@@ -69,7 +86,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => Bookshelf, { nullable: true })
-  async updateUserBook(
+  async updateBookshelf(
     @Arg("id") id: number,
     @Arg("options", () => BookshelfOptions) options: BookshelfOptions
   ): Promise<Bookshelf | null> {
@@ -83,7 +100,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteUserBook(@Arg("id") id: number): Promise<boolean> {
+  async deleteBookshelf(@Arg("id") id: number): Promise<boolean> {
     await Bookshelf.delete(id);
     return true;
   }

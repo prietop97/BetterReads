@@ -38,6 +38,7 @@ export class Bookshelf extends BaseEntity {
   @ManyToOne(() => User, (user) => user.bookshelves)
   user!: User;
 
+  @Field(() => [BookshelvesUserBook])
   @OneToMany(() => BookshelvesUserBook, (bu) => bu.bookshelf)
   bookshelvesUserBooks: BookshelvesUserBook[];
 }

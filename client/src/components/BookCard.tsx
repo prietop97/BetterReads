@@ -1,6 +1,19 @@
 import React from "react";
-import { Box, Flex, Heading, Text, Button } from "@chakra-ui/core";
-import { FaStar, FaHeart } from "react-icons/fa";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Button,
+  Select,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/core";
+import { FaStar, FaHeart, FaUserCircle } from "react-icons/fa";
+import { Router, useRouter } from "next/router";
+import { AiOutlineArrowDown } from "react-icons/ai";
 
 interface BookCardProps {
   googleId: string;
@@ -13,6 +26,7 @@ interface BookCardProps {
 }
 
 export const BookCard: React.FC<BookCardProps> = (props) => {
+  const router = useRouter();
   return (
     <Flex
       w={["100%", "100%", "100%", "47%"]}
@@ -21,14 +35,45 @@ export const BookCard: React.FC<BookCardProps> = (props) => {
       justifyContent="flex-start"
     >
       <Box width="86px">
-        <Box
-          background={`url(${props.imageUrl}) no-repeat center /cover`}
-          height="118px"
-          width="86px"
-        />
+        <Box width="86px">
+          <Box
+            onClick={() => router.push(`/book/${props.googleId}`)}
+            cursor="pointer"
+            background={`url(${props.imageUrl}) no-repeat center /cover`}
+            height="118px"
+            width="86px"
+          />
+        </Box>
+        <Menu>
+          <MenuButton width="100%">
+            <Button
+              color="white"
+              backgroundColor="Teal"
+              isFullWidth
+              borderRadius="none"
+              fontSize="0.8rem"
+              _hover={{ backgroundColor: "Teal", color: "white" }}
+              height="30px"
+              rightIcon={AiOutlineArrowDown}
+            >
+              {props.status || "Track This"}
+            </Button>
+          </MenuButton>
+          <MenuList>
+            <MenuItem>To Read</MenuItem>
+            <MenuItem>Reading</MenuItem>
+            <MenuItem>Finished</MenuItem>
+            {props.favorited !== undefined && <MenuItem>Remove</MenuItem>}
+          </MenuList>
+        </Menu>
       </Box>
       <Box ml="1rem">
-        <Heading fontSize="1rem" fontFamily="Frank Ruhl Libre">
+        <Heading
+          onClick={() => router.push(`/book/${props.googleId}`)}
+          cursor="pointer"
+          fontSize="1rem"
+          fontFamily="Frank Ruhl Libre"
+        >
           {props.title.length > 70
             ? props.title.substring(0, 70) + "..."
             : props.title}
@@ -52,24 +97,12 @@ export const BookCard: React.FC<BookCardProps> = (props) => {
               );
             })}
         </Flex>
-        <Button
-          bg="transparent"
-          mt="0.5rem"
-          fontSize="1rem"
-          color="#547862"
-          border="1px solid rgb(217,217,217)"
-          lineHeight="1.375rem"
-          cursor="pointer"
-        >
-          Save book
-        </Button>
       </Box>
       {props.favorited !== undefined && (
         <Flex width="10%" ml="auto" justifyContent="flex-end">
           <Box
             as={FaHeart}
             size="1.5rem"
-            // color={!props.favorited ? "rgb(210, 71, 25)" : "Red"}
             fill={!props.favorited ? "grey" : "#EA7258"}
           />
         </Flex>
