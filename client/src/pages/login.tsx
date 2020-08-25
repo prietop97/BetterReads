@@ -21,7 +21,6 @@ const Login: React.FC<loginProps> = ({}) => {
           password: "",
         }}
         onSubmit={async (values, { setErrors }) => {
-          console.log(values);
           const response = await login({
             variables: values,
             update: (cache, { data }) => {
@@ -34,7 +33,6 @@ const Login: React.FC<loginProps> = ({}) => {
               });
             },
           });
-          console.log(response);
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
           } else if (response.data?.login.user) {

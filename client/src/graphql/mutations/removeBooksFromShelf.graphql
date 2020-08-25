@@ -1,0 +1,3 @@
+mutation RemoveBooksFromShelf($shelfId: Float!,$bookIds: Float[]){
+    removeBooksFromBookShelf(id:$shelfId,bookIds:$bookIds)
+}

@@ -1,0 +1,9 @@
+mutation CreateUserBook($bookId: Float!, $readingStatus: String!) {
+  createUserBook(options: { bookId: $bookId, readingStatus: $readingStatus }) {
+    id
+    book {
+      googleId
+      title
+    }
+  }
+}

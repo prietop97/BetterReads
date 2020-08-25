@@ -66,8 +66,9 @@ export class UserBookResolver {
   ): Promise<UserBook | null> {
     const book = await UserBook.findOne(id, { relations: ["book"] });
     if (!book) return null;
-    if (typeof options.readingStatus !== "undefined")
+    if (typeof options.readingStatus !== "undefined") {
       book.readingStatus = options.readingStatus;
+    }
     if (typeof options.favorited !== "undefined")
       book.favorited = options.favorited;
     if (typeof options.rating !== "undefined") book.rating = options.rating;

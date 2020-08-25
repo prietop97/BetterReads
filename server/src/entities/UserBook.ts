@@ -48,10 +48,9 @@ export class UserBook extends BaseEntity {
   @ManyToOne(() => User, (user) => user.books)
   user: User;
 
-  @OneToMany(() => UserBook, (userBook) => userBook.book)
-  userBooks: UserBook[];
-
-  @OneToMany(() => BookshelvesUserBook, (bu) => bu.userBook)
+  @OneToMany(() => BookshelvesUserBook, (bu) => bu.userBook, {
+    onDelete: "CASCADE",
+  })
   bookshelvesUserBooks: BookshelvesUserBook[];
 
   @Field(() => String)

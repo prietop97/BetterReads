@@ -1,0 +1,3 @@
+mutation DeleteUserBook($id: Float!) {
+  deleteUserBook(id: $id)
+}

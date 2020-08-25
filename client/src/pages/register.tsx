@@ -23,7 +23,6 @@ const Register: React.FC<registerProps> = ({}) => {
           confirmPassword: "",
         }}
         onSubmit={async (values, { setErrors }) => {
-          console.log(values);
           delete values.confirmPassword;
           const response = await register({
             variables: values,
@@ -37,7 +36,6 @@ const Register: React.FC<registerProps> = ({}) => {
               });
             },
           });
-          console.log(response);
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
           } else if (response.data?.register.user) {
