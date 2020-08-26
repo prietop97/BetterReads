@@ -28,7 +28,9 @@ export class BookshelvesUserBook extends BaseEntity {
   userBook!: UserBook;
 
   @Field(() => Bookshelf, { nullable: true })
-  @ManyToOne(() => Bookshelf, (book) => book.bookshelvesUserBooks)
+  @ManyToOne(() => Bookshelf, (book) => book.bookshelvesUserBooks, {
+    onDelete: "CASCADE",
+  })
   bookshelf: Bookshelf;
 
   @Field(() => String)

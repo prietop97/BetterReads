@@ -39,6 +39,8 @@ export class Bookshelf extends BaseEntity {
   user!: User;
 
   @Field(() => [BookshelvesUserBook])
-  @OneToMany(() => BookshelvesUserBook, (bu) => bu.bookshelf)
+  @OneToMany(() => BookshelvesUserBook, (bu) => bu.bookshelf, {
+    onDelete: "CASCADE",
+  })
   bookshelvesUserBooks: BookshelvesUserBook[];
 }

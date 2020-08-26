@@ -86,7 +86,7 @@ const Search: NextPage<any> = () => {
           </BreadcrumbItem>
         </Breadcrumb>
       </Wrapper>
-      <PageLayout showShelfSmall={false}>
+      <PageLayout>
         <Flex direction="row" justifyContent="space-between" flexWrap="wrap">
           {results.map((book: any) => (
             <BookCard

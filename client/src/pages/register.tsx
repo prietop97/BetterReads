@@ -8,9 +8,14 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { Button } from "@chakra-ui/core";
 import { withApollo } from "../utils/withApollo";
 
-interface registerProps {}
+interface Send {
+  email: string;
+  password: string;
+  name: string;
+  confirmPassword?: string;
+}
 
-const Register: React.FC<registerProps> = ({}) => {
+const Register: React.FC<{}> = ({}) => {
   const router = useRouter();
   const [register] = useRegisterMutation();
   return (
@@ -23,9 +28,10 @@ const Register: React.FC<registerProps> = ({}) => {
           confirmPassword: "",
         }}
         onSubmit={async (values, { setErrors }) => {
-          delete values.confirmPassword;
+          const sendValues: Send = { ...values };
+          delete sendValues.confirmPassword;
           const response = await register({
-            variables: values,
+            variables: sendValues,
             update: (cache, { data }) => {
               cache.writeQuery<MeQuery>({
                 query: MeDocument,
@@ -81,4 +87,4 @@ const Register: React.FC<registerProps> = ({}) => {
     </Wrapper>
   );
 };
-export default withApollo({ ssr: false })(Register);
+export default withApollo({ ssr: true })(Register);

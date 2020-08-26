@@ -67,4 +67,4 @@ const Login: React.FC<loginProps> = ({}) => {
     </Wrapper>
   );
 };
-export default withApollo({ ssr: false })(Login);
+export default withApollo({ ssr: true })(Login);
