@@ -8,6 +8,7 @@ import {
   UseMiddleware,
   Ctx,
   ObjectType,
+  Float,
 } from "type-graphql";
 import { isAuth } from "../middleware/isAuth";
 import { MyContext } from "../types";
@@ -112,7 +113,7 @@ export class BookshelfResolver {
   @UseMiddleware(isAuth)
   async addBookToBookshelf(
     @Arg("id") id: number,
-    @Arg("userBooksIds") booksId: number[]
+    @Arg("userBooksIds", () => [Float]) booksId: number[]
   ): Promise<boolean> {
     const promises = booksId.map((x) =>
       BookshelvesUserBook.insert({ userBookId: x, bookshelfId: id })
@@ -122,9 +123,10 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async removeBooksFromBookshelf(
     @Arg("id") id: number,
-    @Arg("userBooksIds") booksId: number[]
+    @Arg("userBooksIds", () => [Float]) booksId: number[]
   ): Promise<boolean> {
     const promises = booksId.map((x) =>
       BookshelvesUserBook.delete({ userBookId: x, bookshelfId: id })
@@ -134,6 +136,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => BookshelfResponse, { nullable: true })
+  @UseMiddleware(isAuth)
   async updateBookshelf(
     @Arg("id") id: number,
     @Arg("options", () => BookshelfOptions) options: BookshelfOptions,
@@ -165,6 +168,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async deleteBookshelf(@Arg("id") id: number): Promise<boolean> {
     await Bookshelf.delete(id);
     return true;
