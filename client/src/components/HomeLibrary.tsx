@@ -13,12 +13,14 @@ import { UserBook } from "../generated/graphql";
 import { DeleteShelfModal } from "./DeleteShelfModal";
 import { EditShelfModal } from "./EditShelfModal";
 import { ManageBookshelfModal } from "./ManageBookshelfModal";
+import { useRouter } from "next/router";
 
 interface HomeLibrariesProps {
   library: string;
   books: any | undefined;
   onlyImage?: boolean;
   id?: number;
+  limit?: number;
 }
 
 export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
@@ -30,6 +32,8 @@ export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const router = useRouter();
+  console.log(id);
   return (
     <Box mt={2} borderBottom="1px solid rgb(217,217,217)">
       <DeleteShelfModal isOpen={isOpen} setIsOpen={setIsOpen} id={id!} />
@@ -73,18 +77,15 @@ export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={() => setAddOpen(true)}>
-                  Add Book To This Shelf
+                  Manage Books
                 </MenuItem>
-                {books.length ? (
-                  <MenuItem>Remove Book To This Shelf</MenuItem>
-                ) : null}
-                <MenuItem onClick={() => setEditOpen(true)}>Update</MenuItem>
+                {/* <MenuItem onClick={() => setEditOpen(true)}>Update</MenuItem> */}
                 <MenuItem onClick={() => setIsOpen(true)}>Delete</MenuItem>
               </MenuList>
             </Menu>
           )}
         </Flex>
-        <Text>View all</Text>
+        {router.route !== "/shelves" && <Text>View All</Text>}
       </Flex>
       <Flex
         justifyContent={onlyImage ? "flex-start" : "space-between"}
@@ -94,6 +95,7 @@ export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
           books?.map((x: UserBook) => {
             return (
               <BookCard
+                key={x.id}
                 id={x.id}
                 googleId={x.book.googleId!}
                 imageUrl={x.book.thumbnail!}

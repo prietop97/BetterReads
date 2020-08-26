@@ -1,0 +1,3 @@
+mutation AddBooksToShelf($shelfId: Float!, $bookIds: [Float!]!) {
+  addBookToBookshelf(id: $shelfId, userBooksIds: $bookIds)
+}

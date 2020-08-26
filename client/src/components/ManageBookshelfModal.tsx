@@ -13,7 +13,13 @@ import {
   Checkbox,
   ModalFooter,
 } from "@chakra-ui/core";
-import { useMyBooksQuery, useMyBookshelfQuery } from "../generated/graphql";
+import {
+  useMyBooksQuery,
+  useMyBookshelfQuery,
+  useAddBooksToShelfMutation,
+  useRemoveBooksFromShelfMutation,
+  MyBookshelvesDocument,
+} from "../generated/graphql";
 
 interface addBookModalProps {
   isOpen: boolean;
@@ -30,6 +36,8 @@ export const ManageBookshelfModal: React.FC<addBookModalProps> = ({
 }) => {
   const { data } = useMyBooksQuery();
   const { data: bookshelfBooks } = useMyBookshelfQuery({ variables: { name } });
+  const [addBookToShelf] = useAddBooksToShelfMutation();
+  const [removeBookFromShelf] = useRemoveBooksFromShelfMutation();
   const [newBooks, setNewBooks] = useState<Record<any, any>>({});
   const [toRemove, setToRemove] = useState<Record<any, any>>({});
   const [toAdd, setToAdd] = useState<Record<any, any>>({});
@@ -46,11 +54,9 @@ export const ManageBookshelfModal: React.FC<addBookModalProps> = ({
       }
     });
     setNewBooks(books);
-  }, []);
-  useEffect(() => {
-    console.log(toRemove);
-    console.log(toAdd);
-  }, [toRemove, toAdd]);
+    setToRemove({});
+    setToAdd({});
+  }, [isOpen]);
   return (
     <Modal isOpen={isOpen} isCentered onClose={() => setIsOpen(false)}>
       <ModalOverlay />
@@ -61,7 +67,7 @@ export const ManageBookshelfModal: React.FC<addBookModalProps> = ({
           <Box>
             {Object.values(newBooks).length ? (
               Object.values(newBooks).map((x: any) => (
-                <Flex>
+                <Flex key={x.id}>
                   <Checkbox
                     isChecked={x.inBookshelf}
                     name={x.id}
@@ -111,13 +117,27 @@ export const ManageBookshelfModal: React.FC<addBookModalProps> = ({
           </Box>
           <ModalFooter>
             <Button
-              onClick={() => {
+              onClick={async () => {
                 if (Object.keys(toAdd).length) {
-                  // ADD TO BOOKSHELF
+                  console.log(toAdd);
+                  await addBookToShelf({
+                    variables: {
+                      shelfId: id,
+                      bookIds: Object.values(toAdd).map((x) => x.id),
+                    },
+                    refetchQueries: [{ query: MyBookshelvesDocument }],
+                  });
                 }
                 if (Object.keys(toRemove).length) {
-                  // REMOVE FROM BOOKSHELF
+                  await removeBookFromShelf({
+                    variables: {
+                      shelfId: id,
+                      bookIds: Object.values(toRemove).map((x) => x.id),
+                    },
+                    refetchQueries: [{ query: MyBookshelvesDocument }],
+                  });
                 }
+                setIsOpen(false);
                 // TOAST
               }}
             >

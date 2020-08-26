@@ -11,10 +11,10 @@ interface shelvesProps {}
 
 const Shelves: React.FC<shelvesProps> = ({}) => {
   const { data } = useMyBookshelvesQuery();
-  const { data: anotherData } = useMyBooksQuery();
+  const { data: anotherData } = useMyBooksQuery({ variables: undefined });
   const favorited = anotherData?.myBooks.filter((x) => x.favorited);
   const toBeRead = anotherData?.myBooks.filter(
-    (x) => x.readingStatus === "To Read"
+    (x) => x.readingStatus === "To Be Read"
   );
   const reading = anotherData?.myBooks.filter(
     (x) => x.readingStatus === "Reading"
@@ -22,6 +22,7 @@ const Shelves: React.FC<shelvesProps> = ({}) => {
   const finished = anotherData?.myBooks.filter(
     (x) => x.readingStatus === "Finished"
   );
+
   return (
     <>
       <NavBar />
@@ -39,9 +40,11 @@ const Shelves: React.FC<shelvesProps> = ({}) => {
         <Box>
           {data?.myBookshelves?.map((x) => (
             <HomeLibrary
+              key={x.id}
               library={x.name}
               books={x.bookshelvesUserBooks.map((y) => y.userBook)}
               id={x.id}
+              onlyImage={true}
             />
           ))}
         </Box>

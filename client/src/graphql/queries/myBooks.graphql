@@ -1,5 +1,5 @@
-query MyBooks {
-  myBooks {
+query MyBooks($favorited: Boolean, $status: String) {
+  myBooks(queries: { status: $status, favorited: $favorited }) {
     id
     readingStatus
     favorited

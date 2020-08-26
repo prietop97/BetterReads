@@ -15,7 +15,6 @@ import {
   useUpdateBookshelfMutation,
 } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
-import { useRouter } from "next/router";
 
 interface CreateShelfModalProps {
   isOpen: boolean;
@@ -31,12 +30,12 @@ export const EditShelfModal: React.FC<CreateShelfModalProps> = ({
   name,
 }) => {
   const [editBookshelf] = useUpdateBookshelfMutation();
-  const router = useRouter();
+  console.log(id);
   return (
     <Modal isOpen={isOpen} isCentered onClose={() => setIsOpen(false)}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create new shelf</ModalHeader>
+        <ModalHeader>Edit shelf name</ModalHeader>
         <ModalCloseButton onClick={() => setIsOpen(false)} />
         <ModalBody>
           <Formik
@@ -46,6 +45,7 @@ export const EditShelfModal: React.FC<CreateShelfModalProps> = ({
                 variables: { id: id, name: values.name },
                 refetchQueries: [{ query: MyBookshelvesDocument }],
               });
+              console.log(bookshelf);
               if (bookshelf.data?.updateBookshelf?.bookshelf) {
                 setIsOpen(false);
               } else {
@@ -63,7 +63,7 @@ export const EditShelfModal: React.FC<CreateShelfModalProps> = ({
                   isFullWidth
                   variantColor="blue"
                 >
-                  Create Shelf
+                  Edit Shelf
                 </Button>
               </Form>
             )}
