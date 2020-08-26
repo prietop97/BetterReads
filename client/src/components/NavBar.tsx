@@ -19,7 +19,11 @@ interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
   const router = useRouter();
-  const { data, loading } = useMeQuery();
+  console.log(router);
+  const { data, loading, error } = useMeQuery();
+  if (error) {
+    console.log(error);
+  }
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
 

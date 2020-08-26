@@ -1,0 +1,27 @@
+mutation UpdateUserBook(
+  $id: Float!
+  $favorited: Boolean!
+  $readingStatus: String!
+  $rating: Float
+) {
+  updateUserBook(
+    id: $id
+    options: {
+      favorited: $favorited
+      readingStatus: $readingStatus
+      rating: $rating
+    }
+  ) {
+    id
+    favorited
+    readingStatus
+    rating
+    book {
+      id
+      googleId
+      title
+      author
+      thumbnail
+    }
+  }
+}

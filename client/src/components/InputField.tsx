@@ -18,9 +18,6 @@ export const InputField: React.FC<InputFieldProps> = ({
   ...props
 }) => {
   const [field, { error }] = useField(props);
-  if (label) {
-    console.log("HERE");
-  }
   return (
     <FormControl width={"100%"} isInvalid={!!error}>
       {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}

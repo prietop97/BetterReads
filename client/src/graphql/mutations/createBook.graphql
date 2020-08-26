@@ -1,0 +1,18 @@
+mutation CreateBook(
+  $title: String!
+  $googleId: String!
+  $author: String!
+  $thumbnail: String!
+) {
+  createBook(
+    options: {
+      title: $title
+      googleId: $googleId
+      author: $author
+      thumbnail: $thumbnail
+    }
+  ) {
+    id
+    googleId
+  }
+}

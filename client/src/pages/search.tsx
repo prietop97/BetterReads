@@ -9,19 +9,15 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Icon,
   IconButton,
 } from "@chakra-ui/core";
 import { NextPage } from "next";
 import { BookCard } from "../components/BookCard";
 import { useRouter } from "next/router";
 import { Wrapper } from "../components/Wrapper";
-import Link from "next/link";
 import { AiOutlineHome } from "react-icons/ai";
 
-interface searchProps {}
-
-const Search: NextPage<any> = (props) => {
+const Search: NextPage<any> = () => {
   const router = useRouter();
   //   const [query,setQuery]
   const [results, setResults] = useState<any>([]);
@@ -33,7 +29,6 @@ const Search: NextPage<any> = (props) => {
       `https://www.googleapis.com/books/v1/volumes?q=${router.query.name}`
     );
     const jsonRes = await res.json();
-    console.log(jsonRes);
     setResults(jsonRes.items);
     setTotal(jsonRes.totalItems);
     setFetchMore(jsonRes.totalItems > results.length + jsonRes.items.length);
@@ -62,7 +57,6 @@ const Search: NextPage<any> = (props) => {
       setFetchMore(jsonRes.totalItems > results.length + jsonRes.items.length);
       setTotal(jsonRes.totalItems);
       setAdditionalLoading(false);
-      console.log(jsonRes);
     } catch (error) {
       console.log(error);
     }

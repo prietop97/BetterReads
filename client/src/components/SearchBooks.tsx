@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Text, IconButton, Flex, Button } from "@chakra-ui/core";
+import { Box, Text, IconButton, Flex, Button } from "@chakra-ui/core";
 import { Wrapper } from "./Wrapper";
 import { InputField } from "./InputField";
 import { Formik, Form } from "formik";

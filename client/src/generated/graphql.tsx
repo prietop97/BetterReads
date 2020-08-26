@@ -29,6 +29,10 @@ export type QueryBookArgs = {
   id: Scalars["Float"];
 };
 
+export type QueryMyBooksArgs = {
+  queries?: Maybe<MyBooksQueries>;
+};
+
 export type QueryMyBookArgs = {
   id: Scalars["Float"];
 };
@@ -63,12 +67,17 @@ export type UserBook = {
   readingStatus: Scalars["String"];
   favorited: Scalars["Boolean"];
   rating?: Maybe<Scalars["Float"]>;
-  bookId?: Scalars["Float"];
-  userId?: Scalars["Float"];
+  bookId: Scalars["Float"];
+  userId: Scalars["Float"];
   book: Book;
-  user?: User;
-  createdAt?: Scalars["String"];
-  updatedAt?: Scalars["String"];
+  user: User;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
+};
+
+export type MyBooksQueries = {
+  status?: Maybe<Scalars["String"]>;
+  favorited?: Maybe<Scalars["Boolean"]>;
 };
 
 export type Bookshelf = {
@@ -102,10 +111,10 @@ export type Mutation = {
   createUserBook: UserBook;
   updateUserBook?: Maybe<UserBook>;
   deleteUserBook: Scalars["Boolean"];
-  createBookshelf: Bookshelf;
-  addBookToBookshelf: Bookshelf;
-  removeBookToBookshelf: Bookshelf;
-  updateBookshelf?: Maybe<Bookshelf>;
+  createBookshelf: BookshelfResponse;
+  addBookToBookshelf: Scalars["Boolean"];
+  removeBooksFromBookshelf: Scalars["Boolean"];
+  updateBookshelf?: Maybe<BookshelfResponse>;
   deleteBookshelf: Scalars["Boolean"];
 };
 
@@ -148,12 +157,12 @@ export type MutationCreateBookshelfArgs = {
 };
 
 export type MutationAddBookToBookshelfArgs = {
-  userBookId: Scalars["Float"];
+  userBooksIds: Array<Scalars["Float"]>;
   id: Scalars["Float"];
 };
 
-export type MutationRemoveBookToBookshelfArgs = {
-  userBookId: Scalars["Float"];
+export type MutationRemoveBooksFromBookshelfArgs = {
+  userBooksIds: Array<Scalars["Float"]>;
   id: Scalars["Float"];
 };
 
@@ -198,8 +207,41 @@ export type UserBookOptions = {
   rating?: Maybe<Scalars["Float"]>;
 };
 
+export type BookshelfResponse = {
+  __typename?: "BookshelfResponse";
+  errors?: Maybe<Array<BookshelfFieldError>>;
+  bookshelf?: Maybe<Bookshelf>;
+};
+
+export type BookshelfFieldError = {
+  __typename?: "BookshelfFieldError";
+  field: Scalars["String"];
+  message: Scalars["String"];
+};
+
 export type BookshelfOptions = {
   name?: Maybe<Scalars["String"]>;
+};
+
+export type AddBooksToShelfMutationVariables = Exact<{
+  shelfId: Scalars["Float"];
+  bookIds: Array<Scalars["Float"]>;
+}>;
+
+export type AddBooksToShelfMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "addBookToBookshelf"
+>;
+
+export type CreateBookMutationVariables = Exact<{
+  title: Scalars["String"];
+  googleId: Scalars["String"];
+  author: Scalars["String"];
+  thumbnail: Scalars["String"];
+}>;
+
+export type CreateBookMutation = { __typename?: "Mutation" } & {
+  createBook: { __typename?: "Book" } & Pick<Book, "id" | "googleId">;
 };
 
 export type CreateBookshelfMutationVariables = Exact<{
@@ -207,10 +249,30 @@ export type CreateBookshelfMutationVariables = Exact<{
 }>;
 
 export type CreateBookshelfMutation = { __typename?: "Mutation" } & {
-  createBookshelf: { __typename?: "Bookshelf" } & Pick<
-    Bookshelf,
-    "id" | "name"
-  >;
+  createBookshelf: { __typename?: "BookshelfResponse" } & {
+    bookshelf?: Maybe<
+      { __typename?: "Bookshelf" } & Pick<Bookshelf, "id" | "name">
+    >;
+    errors?: Maybe<
+      Array<
+        { __typename?: "BookshelfFieldError" } & Pick<
+          BookshelfFieldError,
+          "field" | "message"
+        >
+      >
+    >;
+  };
+};
+
+export type CreateUserBookMutationVariables = Exact<{
+  bookId: Scalars["Float"];
+  readingStatus: Scalars["String"];
+}>;
+
+export type CreateUserBookMutation = { __typename?: "Mutation" } & {
+  createUserBook: { __typename?: "UserBook" } & Pick<UserBook, "id"> & {
+      book: { __typename?: "Book" } & Pick<Book, "googleId" | "title">;
+    };
 };
 
 export type DeleteBookshelfMutationVariables = Exact<{
@@ -220,6 +282,15 @@ export type DeleteBookshelfMutationVariables = Exact<{
 export type DeleteBookshelfMutation = { __typename?: "Mutation" } & Pick<
   Mutation,
   "deleteBookshelf"
+>;
+
+export type DeleteUserBookMutationVariables = Exact<{
+  id: Scalars["Float"];
+}>;
+
+export type DeleteUserBookMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "deleteUserBook"
 >;
 
 export type LoginMutationVariables = Exact<{
@@ -262,6 +333,16 @@ export type RegisterMutation = { __typename?: "Mutation" } & {
   };
 };
 
+export type RemoveBooksFromShelfMutationVariables = Exact<{
+  shelfId: Scalars["Float"];
+  bookIds: Array<Scalars["Float"]>;
+}>;
+
+export type RemoveBooksFromShelfMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "removeBooksFromBookshelf"
+>;
+
 export type UpdateBookshelfMutationVariables = Exact<{
   name: Scalars["String"];
   id: Scalars["Float"];
@@ -269,7 +350,40 @@ export type UpdateBookshelfMutationVariables = Exact<{
 
 export type UpdateBookshelfMutation = { __typename?: "Mutation" } & {
   updateBookshelf?: Maybe<
-    { __typename?: "Bookshelf" } & Pick<Bookshelf, "id" | "name">
+    { __typename?: "BookshelfResponse" } & {
+      errors?: Maybe<
+        Array<
+          { __typename?: "BookshelfFieldError" } & Pick<
+            BookshelfFieldError,
+            "field" | "message"
+          >
+        >
+      >;
+      bookshelf?: Maybe<
+        { __typename?: "Bookshelf" } & Pick<Bookshelf, "id" | "name">
+      >;
+    }
+  >;
+};
+
+export type UpdateUserBookMutationVariables = Exact<{
+  id: Scalars["Float"];
+  favorited: Scalars["Boolean"];
+  readingStatus: Scalars["String"];
+  rating?: Maybe<Scalars["Float"]>;
+}>;
+
+export type UpdateUserBookMutation = { __typename?: "Mutation" } & {
+  updateUserBook?: Maybe<
+    { __typename?: "UserBook" } & Pick<
+      UserBook,
+      "id" | "favorited" | "readingStatus" | "rating"
+    > & {
+        book: { __typename?: "Book" } & Pick<
+          Book,
+          "id" | "googleId" | "title" | "author" | "thumbnail"
+        >;
+      }
   >;
 };
 
@@ -279,7 +393,10 @@ export type MeQuery = { __typename?: "Query" } & {
   me?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "email" | "name">>;
 };
 
-export type MyBooksQueryVariables = Exact<{ [key: string]: never }>;
+export type MyBooksQueryVariables = Exact<{
+  favorited?: Maybe<Scalars["Boolean"]>;
+  status?: Maybe<Scalars["String"]>;
+}>;
 
 export type MyBooksQuery = { __typename?: "Query" } & {
   myBooks: Array<
@@ -347,11 +464,132 @@ export type MyBookshelvesQuery = { __typename?: "Query" } & {
   >;
 };
 
+export const AddBooksToShelfDocument = gql`
+  mutation AddBooksToShelf($shelfId: Float!, $bookIds: [Float!]!) {
+    addBookToBookshelf(id: $shelfId, userBooksIds: $bookIds)
+  }
+`;
+export type AddBooksToShelfMutationFn = Apollo.MutationFunction<
+  AddBooksToShelfMutation,
+  AddBooksToShelfMutationVariables
+>;
+
+/**
+ * __useAddBooksToShelfMutation__
+ *
+ * To run a mutation, you first call `useAddBooksToShelfMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddBooksToShelfMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addBooksToShelfMutation, { data, loading, error }] = useAddBooksToShelfMutation({
+ *   variables: {
+ *      shelfId: // value for 'shelfId'
+ *      bookIds: // value for 'bookIds'
+ *   },
+ * });
+ */
+export function useAddBooksToShelfMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddBooksToShelfMutation,
+    AddBooksToShelfMutationVariables
+  >
+) {
+  return Apollo.useMutation<
+    AddBooksToShelfMutation,
+    AddBooksToShelfMutationVariables
+  >(AddBooksToShelfDocument, baseOptions);
+}
+export type AddBooksToShelfMutationHookResult = ReturnType<
+  typeof useAddBooksToShelfMutation
+>;
+export type AddBooksToShelfMutationResult = Apollo.MutationResult<
+  AddBooksToShelfMutation
+>;
+export type AddBooksToShelfMutationOptions = Apollo.BaseMutationOptions<
+  AddBooksToShelfMutation,
+  AddBooksToShelfMutationVariables
+>;
+export const CreateBookDocument = gql`
+  mutation CreateBook(
+    $title: String!
+    $googleId: String!
+    $author: String!
+    $thumbnail: String!
+  ) {
+    createBook(
+      options: {
+        title: $title
+        googleId: $googleId
+        author: $author
+        thumbnail: $thumbnail
+      }
+    ) {
+      id
+      googleId
+    }
+  }
+`;
+export type CreateBookMutationFn = Apollo.MutationFunction<
+  CreateBookMutation,
+  CreateBookMutationVariables
+>;
+
+/**
+ * __useCreateBookMutation__
+ *
+ * To run a mutation, you first call `useCreateBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBookMutation, { data, loading, error }] = useCreateBookMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      googleId: // value for 'googleId'
+ *      author: // value for 'author'
+ *      thumbnail: // value for 'thumbnail'
+ *   },
+ * });
+ */
+export function useCreateBookMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateBookMutation,
+    CreateBookMutationVariables
+  >
+) {
+  return Apollo.useMutation<CreateBookMutation, CreateBookMutationVariables>(
+    CreateBookDocument,
+    baseOptions
+  );
+}
+export type CreateBookMutationHookResult = ReturnType<
+  typeof useCreateBookMutation
+>;
+export type CreateBookMutationResult = Apollo.MutationResult<
+  CreateBookMutation
+>;
+export type CreateBookMutationOptions = Apollo.BaseMutationOptions<
+  CreateBookMutation,
+  CreateBookMutationVariables
+>;
 export const CreateBookshelfDocument = gql`
   mutation createBookshelf($name: String!) {
     createBookshelf(options: { name: $name }) {
-      id
-      name
+      bookshelf {
+        id
+        name
+      }
+      errors {
+        field
+        message
+      }
     }
   }
 `;
@@ -397,6 +635,63 @@ export type CreateBookshelfMutationResult = Apollo.MutationResult<
 export type CreateBookshelfMutationOptions = Apollo.BaseMutationOptions<
   CreateBookshelfMutation,
   CreateBookshelfMutationVariables
+>;
+export const CreateUserBookDocument = gql`
+  mutation CreateUserBook($bookId: Float!, $readingStatus: String!) {
+    createUserBook(
+      options: { bookId: $bookId, readingStatus: $readingStatus }
+    ) {
+      id
+      book {
+        googleId
+        title
+      }
+    }
+  }
+`;
+export type CreateUserBookMutationFn = Apollo.MutationFunction<
+  CreateUserBookMutation,
+  CreateUserBookMutationVariables
+>;
+
+/**
+ * __useCreateUserBookMutation__
+ *
+ * To run a mutation, you first call `useCreateUserBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserBookMutation, { data, loading, error }] = useCreateUserBookMutation({
+ *   variables: {
+ *      bookId: // value for 'bookId'
+ *      readingStatus: // value for 'readingStatus'
+ *   },
+ * });
+ */
+export function useCreateUserBookMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateUserBookMutation,
+    CreateUserBookMutationVariables
+  >
+) {
+  return Apollo.useMutation<
+    CreateUserBookMutation,
+    CreateUserBookMutationVariables
+  >(CreateUserBookDocument, baseOptions);
+}
+export type CreateUserBookMutationHookResult = ReturnType<
+  typeof useCreateUserBookMutation
+>;
+export type CreateUserBookMutationResult = Apollo.MutationResult<
+  CreateUserBookMutation
+>;
+export type CreateUserBookMutationOptions = Apollo.BaseMutationOptions<
+  CreateUserBookMutation,
+  CreateUserBookMutationVariables
 >;
 export const DeleteBookshelfDocument = gql`
   mutation deleteBookshelf($id: Float!) {
@@ -445,6 +740,54 @@ export type DeleteBookshelfMutationResult = Apollo.MutationResult<
 export type DeleteBookshelfMutationOptions = Apollo.BaseMutationOptions<
   DeleteBookshelfMutation,
   DeleteBookshelfMutationVariables
+>;
+export const DeleteUserBookDocument = gql`
+  mutation DeleteUserBook($id: Float!) {
+    deleteUserBook(id: $id)
+  }
+`;
+export type DeleteUserBookMutationFn = Apollo.MutationFunction<
+  DeleteUserBookMutation,
+  DeleteUserBookMutationVariables
+>;
+
+/**
+ * __useDeleteUserBookMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserBookMutation, { data, loading, error }] = useDeleteUserBookMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserBookMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteUserBookMutation,
+    DeleteUserBookMutationVariables
+  >
+) {
+  return Apollo.useMutation<
+    DeleteUserBookMutation,
+    DeleteUserBookMutationVariables
+  >(DeleteUserBookDocument, baseOptions);
+}
+export type DeleteUserBookMutationHookResult = ReturnType<
+  typeof useDeleteUserBookMutation
+>;
+export type DeleteUserBookMutationResult = Apollo.MutationResult<
+  DeleteUserBookMutation
+>;
+export type DeleteUserBookMutationOptions = Apollo.BaseMutationOptions<
+  DeleteUserBookMutation,
+  DeleteUserBookMutationVariables
 >;
 export const LoginDocument = gql`
   mutation Login($email: String!, $password: String!) {
@@ -600,11 +943,66 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
   RegisterMutation,
   RegisterMutationVariables
 >;
+export const RemoveBooksFromShelfDocument = gql`
+  mutation RemoveBooksFromShelf($shelfId: Float!, $bookIds: [Float!]!) {
+    removeBooksFromBookshelf(id: $shelfId, userBooksIds: $bookIds)
+  }
+`;
+export type RemoveBooksFromShelfMutationFn = Apollo.MutationFunction<
+  RemoveBooksFromShelfMutation,
+  RemoveBooksFromShelfMutationVariables
+>;
+
+/**
+ * __useRemoveBooksFromShelfMutation__
+ *
+ * To run a mutation, you first call `useRemoveBooksFromShelfMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveBooksFromShelfMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeBooksFromShelfMutation, { data, loading, error }] = useRemoveBooksFromShelfMutation({
+ *   variables: {
+ *      shelfId: // value for 'shelfId'
+ *      bookIds: // value for 'bookIds'
+ *   },
+ * });
+ */
+export function useRemoveBooksFromShelfMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveBooksFromShelfMutation,
+    RemoveBooksFromShelfMutationVariables
+  >
+) {
+  return Apollo.useMutation<
+    RemoveBooksFromShelfMutation,
+    RemoveBooksFromShelfMutationVariables
+  >(RemoveBooksFromShelfDocument, baseOptions);
+}
+export type RemoveBooksFromShelfMutationHookResult = ReturnType<
+  typeof useRemoveBooksFromShelfMutation
+>;
+export type RemoveBooksFromShelfMutationResult = Apollo.MutationResult<
+  RemoveBooksFromShelfMutation
+>;
+export type RemoveBooksFromShelfMutationOptions = Apollo.BaseMutationOptions<
+  RemoveBooksFromShelfMutation,
+  RemoveBooksFromShelfMutationVariables
+>;
 export const UpdateBookshelfDocument = gql`
   mutation updateBookshelf($name: String!, $id: Float!) {
     updateBookshelf(id: $id, options: { name: $name }) {
-      id
-      name
+      errors {
+        field
+        message
+      }
+      bookshelf {
+        id
+        name
+      }
     }
   }
 `;
@@ -652,6 +1050,81 @@ export type UpdateBookshelfMutationOptions = Apollo.BaseMutationOptions<
   UpdateBookshelfMutation,
   UpdateBookshelfMutationVariables
 >;
+export const UpdateUserBookDocument = gql`
+  mutation UpdateUserBook(
+    $id: Float!
+    $favorited: Boolean!
+    $readingStatus: String!
+    $rating: Float
+  ) {
+    updateUserBook(
+      id: $id
+      options: {
+        favorited: $favorited
+        readingStatus: $readingStatus
+        rating: $rating
+      }
+    ) {
+      id
+      favorited
+      readingStatus
+      rating
+      book {
+        id
+        googleId
+        title
+        author
+        thumbnail
+      }
+    }
+  }
+`;
+export type UpdateUserBookMutationFn = Apollo.MutationFunction<
+  UpdateUserBookMutation,
+  UpdateUserBookMutationVariables
+>;
+
+/**
+ * __useUpdateUserBookMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserBookMutation, { data, loading, error }] = useUpdateUserBookMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      favorited: // value for 'favorited'
+ *      readingStatus: // value for 'readingStatus'
+ *      rating: // value for 'rating'
+ *   },
+ * });
+ */
+export function useUpdateUserBookMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserBookMutation,
+    UpdateUserBookMutationVariables
+  >
+) {
+  return Apollo.useMutation<
+    UpdateUserBookMutation,
+    UpdateUserBookMutationVariables
+  >(UpdateUserBookDocument, baseOptions);
+}
+export type UpdateUserBookMutationHookResult = ReturnType<
+  typeof useUpdateUserBookMutation
+>;
+export type UpdateUserBookMutationResult = Apollo.MutationResult<
+  UpdateUserBookMutation
+>;
+export type UpdateUserBookMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserBookMutation,
+  UpdateUserBookMutationVariables
+>;
 export const MeDocument = gql`
   query Me {
     me {
@@ -694,8 +1167,8 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const MyBooksDocument = gql`
-  query MyBooks {
-    myBooks {
+  query MyBooks($favorited: Boolean, $status: String) {
+    myBooks(queries: { status: $status, favorited: $favorited }) {
       id
       readingStatus
       favorited
@@ -723,6 +1196,8 @@ export const MyBooksDocument = gql`
  * @example
  * const { data, loading, error } = useMyBooksQuery({
  *   variables: {
+ *      favorited: // value for 'favorited'
+ *      status: // value for 'status'
  *   },
  * });
  */

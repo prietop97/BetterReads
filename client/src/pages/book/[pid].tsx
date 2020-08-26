@@ -10,7 +10,6 @@ import {
   Text,
   Heading,
   Flex,
-  Stack,
   Tag,
   Breadcrumb,
   BreadcrumbItem,
@@ -40,7 +39,6 @@ const BookPage: React.FC<BookPageProps> = ({}) => {
     if (!jsonRes.volumeInfo) {
       router.push("/home");
     } else {
-      console.log(jsonRes);
       setBook(jsonRes);
     }
   };
