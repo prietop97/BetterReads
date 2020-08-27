@@ -1,22 +1,30 @@
 import React from "react";
 import { NavBar } from "../components/NavBar";
-import { Flex, Text, Button, Box, Image } from "@chakra-ui/core";
+import { Flex, Text, Button, Box, Image, Heading } from "@chakra-ui/core";
 import { GiBookshelf } from "react-icons/gi";
 import { AiFillExperiment } from "react-icons/ai";
 import { FaBookReader } from "react-icons/fa";
 import { withApollo } from "../utils/withApollo";
+import { useRouter } from "next/router";
 interface indexProps {}
 
 const Index: React.FC<indexProps> = ({}) => {
+  const router = useRouter();
   return (
     <>
       <NavBar />
       <Flex align="center" justify="space-evenly" m="3rem">
         <Flex m="4rem" direction="column">
-          <Text fontSize="4rem" m="1rem" fontWeight="bold" lineHeight="5rem">
+          <Heading
+            color="teal.400"
+            fontSize="4rem"
+            m="1rem"
+            fontWeight="bold"
+            lineHeight="5rem"
+          >
             The Platform <br />
             For Readers
-          </Text>
+          </Heading>
           <Button
             fontSize="1.3rem"
             bg="white"
@@ -26,7 +34,7 @@ const Index: React.FC<indexProps> = ({}) => {
             fontWeight="normal"
             cursor="pointer"
             border="2px solid #6d9a7f"
-            _hover={{ bg: "#6d9a7f", color: "white" }}
+            _hover={{ bg: "teal.400", color: "white" }}
           >
             Get Started
           </Button>
@@ -53,8 +61,8 @@ const Index: React.FC<indexProps> = ({}) => {
           an existing habit, the right technolgy can make all the difference.
         </Text>
         <Text width="40rem">
-          At Readrr, we combine in-depth data science with a friendly, easy to
-          navigate application to provide a robust, never before seen
+          At BetterReads, we combine in-depth data science with a friendly, easy
+          to navigate application to provide a robust, never before seen
           experience!
         </Text>
       </Flex>
@@ -66,7 +74,7 @@ const Index: React.FC<indexProps> = ({}) => {
         color="whitesmoke"
       >
         <Flex
-          bg="#6d9a7f"
+          bg="teal.400"
           direction="column"
           m="2rem"
           p="1.5rem"
@@ -104,7 +112,7 @@ const Index: React.FC<indexProps> = ({}) => {
           </Text>
         </Flex>
         <Flex
-          bg="#6d9a7f"
+          bg="teal.400"
           direction="column"
           m="2rem"
           p="1.5rem"
@@ -126,7 +134,7 @@ const Index: React.FC<indexProps> = ({}) => {
       <Flex mt="8rem" justify="center" align="center">
         <Flex direction="column">
           <Text fontSize="2rem" m="1rem">
-            Start your journey with Readrr today!
+            Start your journey with BetterReads today!
           </Text>
           <Button
             fontSize="1.3rem"
@@ -138,8 +146,9 @@ const Index: React.FC<indexProps> = ({}) => {
             cursor="pointer"
             border="2px solid #6d9a7f"
             _hover={{ bg: "#6d9a7f", color: "white" }}
+            onClick={() => router.push("/register")}
           >
-            Try For Free
+            Register Now
           </Button>
         </Flex>
 
@@ -150,7 +159,7 @@ const Index: React.FC<indexProps> = ({}) => {
         />
       </Flex>
       <Flex justify="center" bg="#d9d9d9" m="0" p="1rem">
-        <Text> c Readrr 2020</Text>
+        <Text>BetterReads 2020</Text>
       </Flex>
     </>
   );

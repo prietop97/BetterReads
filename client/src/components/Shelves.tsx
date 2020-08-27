@@ -34,7 +34,7 @@ export const Shelves: React.FC<ShelvesProps> = () => {
       >
         <Text
           fontSize="1.5rem"
-          color="Teal"
+          color="teal.400"
           lineHeight="1.875rem"
           fontWeight="bold"
           fontFamily="Frank Ruhl Libre"
@@ -48,13 +48,14 @@ export const Shelves: React.FC<ShelvesProps> = () => {
         </Text>
         <Button
           fontWeight={500}
-          bg="none"
+          bg="teal.400"
           width="10rem"
           fontSize="1rem"
-          color="#d24719"
-          border="1px solid #d24719"
+          color="white"
+          border="1px solid #6d9a7f"
           lineHeight="1.375rem"
           cursor="pointer"
+          _hover={{ background: "none", color: "teal.400" }}
           onClick={() => setIsOpen(!isOpen)}
         >
           Create new shelf
@@ -81,8 +82,6 @@ export const Shelves: React.FC<ShelvesProps> = () => {
                           onClick={() => router.push(`/book/${x.book.id}`)}
                           cursor="pointer"
                           background={`url(${x.book.thumbnail}) no-repeat center /cover`}
-                          // height="118px"
-                          // width="86px"
                           width="50px"
                           height="69px"
                         />

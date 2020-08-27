@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/core";
 import { FaStar, FaHeart } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { AiOutlineArrowDown } from "react-icons/ai";
 import {
   useCreateBookMutation,
   useCreateUserBookMutation,
@@ -44,12 +43,18 @@ export const BookCard: React.FC<BookCardProps> = ({
   const [editUserBook] = useUpdateUserBookMutation();
   const [deleteUserBook] = useDeleteUserBookMutation();
 
-  const BookToast = (message: string, description: string) => {
+  const BookToast = (message: string) => {
     toast({
       title: `${message}`,
-      description: `${description}`,
       duration: 3000,
       isClosable: true,
+      render: () => (
+        <Box backgroundColor="teal.400">
+          <Text color="white" padding="1rem 4rem">
+            {message}
+          </Text>
+        </Box>
+      ),
     });
   };
 
@@ -61,9 +66,6 @@ export const BookCard: React.FC<BookCardProps> = ({
         readingStatus: status,
       },
     });
-    const bool = edited.data && Object.keys(edited.data).length;
-    if (bool) BookToast("Book updated", "We have updated your book");
-    else BookToast("Book not updated", "Try again later!");
     return edited;
   };
 
@@ -75,9 +77,6 @@ export const BookCard: React.FC<BookCardProps> = ({
         readingStatus: props.status!,
       },
     });
-    const bool = edited.data && Object.keys(edited.data).length;
-    if (bool) BookToast("Book updated", "We have updated your book");
-    else BookToast("Book not updated", "Try again later!");
     return edited;
   };
   const updateBookRating = async (rating: number) => {
@@ -89,9 +88,6 @@ export const BookCard: React.FC<BookCardProps> = ({
         rating,
       },
     });
-    const bool = edited.data && Object.keys(edited.data).length;
-    if (bool) BookToast("Book updated", "We have updated your book");
-    else BookToast("Book not updated", "Try again later!");
     return edited;
   };
 
@@ -109,7 +105,7 @@ export const BookCard: React.FC<BookCardProps> = ({
       },
     });
     if (!book.data) {
-      BookToast("Book not added", "Try again later!");
+      BookToast("Book not added, try again later!");
       return;
     }
     const userBook = await addUserBook({
@@ -120,8 +116,8 @@ export const BookCard: React.FC<BookCardProps> = ({
       refetchQueries: [{ query: MyBooksDocument }],
     });
     const bool = userBook.data && Object.keys(userBook.data).length;
-    if (bool) BookToast("Book added", "We have added your book");
-    else BookToast("Book not added", "Try again later!");
+    if (bool) BookToast("Book added");
+    else BookToast("Book not added, try again later!");
     return userBook;
   };
 
@@ -148,13 +144,12 @@ export const BookCard: React.FC<BookCardProps> = ({
           <MenuButton width="100%">
             <Button
               color="white"
-              backgroundColor="Teal"
+              backgroundColor="teal.400"
               isFullWidth
               borderRadius="none"
               fontSize="0.8rem"
-              _hover={{ backgroundColor: "Teal", color: "white" }}
               height="30px"
-              rightIcon={AiOutlineArrowDown}
+              rightIcon="chevron-down"
             >
               {props.status || "Track This"}
             </Button>
@@ -172,16 +167,12 @@ export const BookCard: React.FC<BookCardProps> = ({
             {props.favorited !== undefined && (
               <MenuItem
                 onClick={async () => {
-                  const res = await deleteUserBook({
+                  await deleteUserBook({
                     variables: { id: props.id! },
                     update: (cache) => {
                       cache.evict({ id: "UserBook:" + props.id });
                     },
                   });
-                  const bool = res.data;
-                  if (bool)
-                    BookToast("Book deleted", "We have deleted your book");
-                  else BookToast("Book not deleted", "Try again later!");
                 }}
               >
                 Remove

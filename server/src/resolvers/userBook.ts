@@ -37,7 +37,6 @@ class MyBooksQueries {
 @Resolver()
 export class UserBookResolver {
   @Query(() => [UserBook])
-  @UseMiddleware(isAuth)
   myBooks(
     @Ctx() { req }: MyContext,
     @Arg("queries", () => MyBooksQueries, { nullable: true })
@@ -62,13 +61,11 @@ export class UserBookResolver {
   }
 
   @Query(() => UserBook, { nullable: true })
-  @UseMiddleware(isAuth)
   async myBook(@Arg("id") id: number): Promise<UserBook | undefined> {
     return UserBook.findOne(id, { relations: ["book"] });
   }
 
   @Mutation(() => UserBook)
-  @UseMiddleware(isAuth)
   async createUserBook(
     @Arg("options", () => UserBookOptions) options: UserBookOptions,
     @Ctx() { req }: MyContext
@@ -87,7 +84,6 @@ export class UserBookResolver {
   }
 
   @Mutation(() => UserBook, { nullable: true })
-  @UseMiddleware(isAuth)
   async updateUserBook(
     @Arg("id") id: number,
     @Arg("options", () => UserBookOptions) options: UserBookOptions
@@ -105,7 +101,6 @@ export class UserBookResolver {
   }
 
   @Mutation(() => Boolean)
-  @UseMiddleware(isAuth)
   async deleteUserBook(@Arg("id") id: number): Promise<boolean> {
     await UserBook.delete(id);
     return true;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, IconButton, Flex, Button } from "@chakra-ui/core";
+import { Box, Text, IconButton, Flex, Button, Heading } from "@chakra-ui/core";
 import { Wrapper } from "./Wrapper";
 import { InputField } from "./InputField";
 import { Formik, Form } from "formik";
@@ -15,9 +15,9 @@ export const SearchBooks: React.FC<SearchBooksProps> = ({}) => {
       <Wrapper>
         {router.pathname === "/home" && (
           <Box m={0}>
-            <Text fontSize="2.2rem" fontWeight="bold">
+            <Heading fontSize="2.2rem" fontWeight="bold" color="teal.400">
               What are you reading?
-            </Text>
+            </Heading>
             <Text>
               Search for a book that you want to track and add to shelves.
             </Text>
@@ -41,8 +41,10 @@ export const SearchBooks: React.FC<SearchBooksProps> = ({}) => {
                     name="bookQuery"
                   />
                   <IconButton
+                    mt="1rem"
                     isLoading={isSubmitting}
-                    variantColor="teal"
+                    backgroundColor="teal.400"
+                    color="white"
                     icon="search"
                     aria-label="Search Books"
                     as={Button}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -18,12 +18,14 @@ import { useApolloClient } from "@apollo/client";
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-  const router = useRouter();
-  console.log(router);
   const { data, loading, error } = useMeQuery();
-  if (error) {
-    console.log(error);
-  }
+  const router = useRouter();
+  if (error?.message) router.push("/login");
+  useEffect(() => {
+    if (!data) {
+      router.push("/login");
+    }
+  }, [error]);
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
 
@@ -94,11 +96,11 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
             <Text
               fontSize="1.6rem"
               fontWeight={700}
-              color="Teal"
+              color="teal.400"
               textDecoration="none"
               cursor="pointer"
             >
-              Readrr
+              BetterReads
             </Text>
           </NextLink>
           <Flex justifyContent="flex-end">{body}</Flex>

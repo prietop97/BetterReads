@@ -5,23 +5,15 @@ import { withApollo } from "../../utils/withApollo";
 import { BookCard } from "../../components/BookCard";
 import { useRouter } from "next/router";
 import { SearchBooks } from "../../components/SearchBooks";
-import {
-  Box,
-  Text,
-  Heading,
-  Flex,
-  Tag,
-  Breadcrumb,
-  BreadcrumbItem,
-  IconButton,
-  BreadcrumbLink,
-} from "@chakra-ui/core";
-import { Wrapper } from "../../components/Wrapper";
-import { AiOutlineHome } from "react-icons/ai";
+import { Box, Text, Heading, Flex, Tag } from "@chakra-ui/core";
+import { useMeQuery } from "../../generated/graphql";
 
 interface BookPageProps {}
 
 const BookPage: React.FC<BookPageProps> = ({}) => {
+  const { data } = useMeQuery();
+  const router = useRouter();
+  if (!data || !data?.me) router.push("/");
   const [book, setBook] = useState<any>({});
   const categoriesAlgo = (x: string[]) => {
     let myarray: string[] = [];
@@ -30,7 +22,6 @@ const BookPage: React.FC<BookPageProps> = ({}) => {
     });
     return myarray.filter((z: string, b: number) => myarray.indexOf(z) === b);
   };
-  const router = useRouter();
   const initialSearch = async () => {
     const res = await fetch(
       `https://www.googleapis.com/books/v1/volumes/${router.query.pid}`
@@ -49,30 +40,8 @@ const BookPage: React.FC<BookPageProps> = ({}) => {
     <>
       <NavBar />
       <SearchBooks />
-      <Wrapper>
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <IconButton
-              onClick={() => router.push("/home")}
-              backgroundColor="transparent"
-              outline="none"
-              _focus={{ border: 0 }}
-              _hover={{ backgroundColor: "transparent" }}
-              _active={{ outline: "none" }}
-              icon={AiOutlineHome}
-              aria-label="Navigate Home"
-            />
-            <BreadcrumbLink href="home">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          {Object.keys(book).length && (
-            <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href="#">{book.volumeInfo?.title}</BreadcrumbLink>
-            </BreadcrumbItem>
-          )}
-        </Breadcrumb>
-      </Wrapper>
       <PageLayout>
-        {Object.keys(book).length && (
+        {Object.keys(book).length > 0 && (
           <Box>
             <BookCard
               key={book.id}
@@ -188,7 +157,12 @@ const BookPage: React.FC<BookPageProps> = ({}) => {
                 {categoriesAlgo(book.volumeInfo?.categories).map(
                   (x: string) => {
                     return (
-                      <Tag mr="0.7rem" mb="0.7rem" variantColor="teal">
+                      <Tag
+                        mr="0.7rem"
+                        mb="0.7rem"
+                        backgroundColor="teal.400"
+                        color="white"
+                      >
                         {x}
                       </Tag>
                     );

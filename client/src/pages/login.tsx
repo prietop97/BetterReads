@@ -1,12 +1,12 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
-import { Wrapper } from "../components/Wrapper";
 import { InputField } from "../components/InputField";
 import { useLoginMutation, MeDocument, MeQuery } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { Button } from "@chakra-ui/core";
 import { withApollo } from "../utils/withApollo";
+import { AuthWrapper } from "../components/AuthWrapper";
 
 interface loginProps {}
 
@@ -14,7 +14,12 @@ const Login: React.FC<loginProps> = ({}) => {
   const router = useRouter();
   const [login] = useLoginMutation();
   return (
-    <Wrapper variant="small">
+    <AuthWrapper
+      heading="Login to BetterReads"
+      redirectText="Don't have an account?"
+      redirectText2="Regisiter here."
+      redirectLink="/register"
+    >
       <Formik
         initialValues={{
           email: "",
@@ -54,17 +59,19 @@ const Login: React.FC<loginProps> = ({}) => {
               type="password"
             />
             <Button
+              mt="1rem"
               type="submit"
               isLoading={isSubmitting}
               isFullWidth
-              variantColor="blue"
+              backgroundColor="teal.400"
+              color="white"
             >
               Login
             </Button>
           </Form>
         )}
       </Formik>
-    </Wrapper>
+    </AuthWrapper>
   );
 };
 export default withApollo({ ssr: true })(Login);

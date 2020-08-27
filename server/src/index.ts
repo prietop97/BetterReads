@@ -11,25 +11,13 @@ import connectRedis from "connect-redis";
 import { __prod__, COOKIE_NAME } from "./constants";
 import cors from "cors";
 import { createConnection } from "typeorm";
-import { Book } from "./entities/Book";
-import { User } from "./entities/User";
-import { Bookshelf } from "./entities/Bookshelf";
-import { UserBook } from "./entities/UserBook";
-import { BookshelvesUserBook } from "./entities/BookshelvesUserBook";
 import { UserBookResolver } from "./resolvers/userBook";
 import { BookshelfResolver } from "./resolvers/bookshelf";
+import config from "./typeormConfig";
 
 const main = async () => {
   // SETTING UP DATABASE AND MIGRATING
-  await createConnection({
-    type: "postgres",
-    database: "betterreads",
-    username: "postgres",
-    password: process.env.DB_PASSWORD,
-    logging: true,
-    synchronize: true,
-    entities: [Book, User, Bookshelf, UserBook, BookshelvesUserBook],
-  });
+  await createConnection(config);
   // SETTING UP REDIS STORE FOR USER SESSIONS
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
@@ -56,7 +44,7 @@ const main = async () => {
         secure: __prod__, // cookie only works with https
       },
       saveUninitialized: false,
-      secret: "sadasdasdasd",
+      secret: process.env.COOKIE_SECRET || "super secret key",
       resave: false,
     })
   );
@@ -79,8 +67,10 @@ const main = async () => {
     app,
     cors: false,
   });
-  app.listen(4000, () => {
-    console.log("Server started on localhost:4000");
+
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`Server started on localhost:${PORT}`);
   });
 };
 

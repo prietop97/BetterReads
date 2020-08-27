@@ -13,7 +13,6 @@ import { UserBook } from "../generated/graphql";
 import { DeleteShelfModal } from "./DeleteShelfModal";
 import { EditShelfModal } from "./EditShelfModal";
 import { ManageBookshelfModal } from "./ManageBookshelfModal";
-import { useRouter } from "next/router";
 
 interface HomeLibrariesProps {
   library: string;
@@ -32,7 +31,6 @@ export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
-  const router = useRouter();
   console.log(id);
   return (
     <Box mt={2} borderBottom="1px solid rgb(217,217,217)">
@@ -85,7 +83,6 @@ export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
             </Menu>
           )}
         </Flex>
-        {router.route !== "/shelves" && <Text>View All</Text>}
       </Flex>
       <Flex
         justifyContent={onlyImage ? "flex-start" : "space-between"}
