@@ -10,7 +10,7 @@ import { useMyBooksQuery } from "../generated/graphql";
 interface homeProps {}
 
 const Home: React.FC<homeProps> = ({}) => {
-  const { data, error } = useMyBooksQuery();
+  const { data } = useMyBooksQuery();
   // const router = useRouter();
   // if (error) {
   //   console.log(error.message);
