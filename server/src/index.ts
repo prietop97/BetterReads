@@ -20,13 +20,13 @@ const main = async () => {
   await createConnection(config);
   // SETTING UP REDIS STORE FOR USER SESSIONS
   const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient();
+  const redisClient = redis.createClient({ url: process.env.REDIS_URL });
 
   const app = express();
   app.use(
     cors({
       credentials: true,
-      origin: "http://localhost:3000",
+      origin: ["https://better-reads.vercel.app", "http://localhost:3000"],
     })
   );
   // SETTING SESSIONS SETTINGS

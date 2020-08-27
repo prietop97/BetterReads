@@ -30,11 +30,13 @@ export class BookResolver {
   }
 
   @Query(() => Book, { nullable: true })
+  @UseMiddleware(isAuth)
   book(@Arg("id") id: number): Promise<Book | undefined> {
     return Book.findOne(id);
   }
 
   @Mutation(() => Book)
+  @UseMiddleware(isAuth)
   async createBook(
     @Arg("options", () => Options) options: Options
   ): Promise<Book> {
@@ -44,6 +46,7 @@ export class BookResolver {
   }
 
   @Mutation(() => Book, { nullable: true })
+  @UseMiddleware(isAuth)
   async updateBook(
     @Arg("id") id: number,
     @Arg("options", () => Options) options: Options
@@ -60,6 +63,7 @@ export class BookResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async deleteBook(@Arg("id") id: number): Promise<boolean> {
     await Book.delete(id);
     return true;

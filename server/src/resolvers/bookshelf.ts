@@ -42,6 +42,7 @@ class BookshelfResponse {
 @Resolver()
 export class BookshelfResolver {
   @Query(() => [Bookshelf], { nullable: true })
+  @UseMiddleware(isAuth)
   async myBookshelves(@Ctx() { req }: MyContext): Promise<Bookshelf[]> {
     const bookshelves = await Bookshelf.find({
       where: { userId: req.session.userId },
@@ -55,6 +56,7 @@ export class BookshelfResolver {
   }
 
   @Query(() => Bookshelf, { nullable: true })
+  @UseMiddleware(isAuth)
   async myBookshelf(@Arg("name") name: string): Promise<Bookshelf | undefined> {
     return Bookshelf.findOne({
       where: { name },
@@ -67,6 +69,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => BookshelfResponse)
+  @UseMiddleware(isAuth)
   async createBookshelf(
     @Arg("options", () => BookshelfOptions) options: BookshelfOptions,
     @Ctx() { req }: MyContext
@@ -107,6 +110,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async addBookToBookshelf(
     @Arg("id") id: number,
     @Arg("userBooksIds", () => [Float]) booksId: number[]
@@ -131,6 +135,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => BookshelfResponse, { nullable: true })
+  @UseMiddleware(isAuth)
   async updateBookshelf(
     @Arg("id") id: number,
     @Arg("options", () => BookshelfOptions) options: BookshelfOptions,
@@ -162,6 +167,7 @@ export class BookshelfResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async deleteBookshelf(@Arg("id") id: number): Promise<boolean> {
     await Bookshelf.delete(id);
     return true;
