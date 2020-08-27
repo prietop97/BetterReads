@@ -38,7 +38,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     if (constants_1.__prod__)
         clientSettings = { url: process.env.REDIS_URL };
     const redisClient = redis_1.default.createClient(clientSettings);
-    console.log(constants_1.__prod__);
+    redisClient.on("connect", () => console.log("Connected to redis"));
     const app = express_1.default();
     app.use(cors_1.default({
         credentials: true,
@@ -58,7 +58,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-            httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
         },

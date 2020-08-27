@@ -26,7 +26,7 @@ const main = async () => {
   let clientSettings: redis.ClientOpts | undefined = undefined;
   if (__prod__) clientSettings = { url: process.env.REDIS_URL };
   const redisClient = redis.createClient(clientSettings);
-  console.log(__prod__);
+  redisClient.on("connect", () => console.log("Connected to redis"));
   const app = express();
   app.use(
     cors({
@@ -50,7 +50,7 @@ const main = async () => {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
-        httpOnly: true,
+        // httpOnly: true,
         sameSite: "lax",
         secure: __prod__, // cookie only works with https
       },
