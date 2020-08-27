@@ -1,39 +1,45 @@
 ## BetterReads
 
-### BetterReads is a web application that lets users search through the google books api and save them to bookshelves. They can also change the reading status of the book from "Reading" / "To Be Read" / "Finished"
+### BetterReads is a web application that lets users search through the google books api and save them to bookshelves. They can also change the reading status of the book from "To Be Read" to "Reading" to "Finished"
+
+Front End Deployed URL - https://better-reads.vercel.app/
+Back End Deployed URL - https://betterreads-gql.herokuapp.com/
 
 ## Technologies Used
 
-    Front End
-    - [Next.JS][next.js]
-    - [Apollo][apollo]
-    - [Typescript][typescript]
-    - [GraphQL][graphql]
-    - [Chakra UI][chakraui]
-    - [Formik][formik]
-    - [React Icons][reacticons]
+### Front End
 
-    Back End
-    - [Node.JS][node.js]
-    - [Apollo][apollo]
-    - [Typescript][typescript]
-    - [GraphQL][graphql]
-    - [Redis][redis]
-    - [Typeorm][typeorm]
-    - [PostgreSQL][postgresql]
+- Next.JS
+- Apollo
+- Typescript
+- GraphQL
+- Chakra UI
+- Formik
+- React Icons
 
-## Setup for development environment
+### Back End
 
-    - git clone [BetterReadsRepo][BetterReadsRepo]
+- Node.JS
+- Apollo
+- Typescript
+- GraphQL
+- Redis
+- Typeorm
+- PostgreSQL
 
-[next.js]: https://nextjs.org/
-[apollo]: https://www.apollographql.com/
-[typescript]: https://www.typescriptlang.org/
-[graphql]: https://graphql.org/
-[chakraui]: https://chakra-ui.com/
-[formik]: https://formik.org/
-[reacticons]: https://react-icons.github.io/react-icons/
-[node.js]: https://nodejs.org/en/
-[redis]: https://redis.io/
-[typeorm]: https://typeorm.io/#/
-[postgresql]: https://www.postgresql.org/
+## Enviroment Variables
+
+### Back end
+
+- DB_PASSWORD postgresql Password
+- DB_NAME Postgresql database name
+- DB_USERNAME Postgresql username
+
+## Set up
+
+- Fork and clone the repo to install it as your own remote.
+- Create .env file in the server folder and include the environment variables discussed above.
+- Start up a redis instance on your machine.
+- Run npm install in both client & server folders.
+- Run npm run dev in the client folder.
+- Run npm run watch & npm run dev on server project simultaneously.
