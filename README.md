@@ -1,7 +1,6 @@
 ## BetterReads
 
-### BetterReads is a web application that lets users search through the google books api and save them to bookshelves. They can also change the reading status of the book from "To Be Read" to "Reading" to "Finished"
-
+### BetterReads is a web application that lets users search through the google books api and save them to bookshelves. They can also rate, favorite and change the reading status of saved books.
 - Front End Deployed URL - https://better-reads.vercel.app/
 - Back End Deployed URL - https://betterreads-gql.herokuapp.com/
 
