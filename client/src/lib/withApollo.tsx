@@ -27,6 +27,7 @@ export default (App: any) => {
         router,
         ctx: { req, res },
       } = ctx;
+      console.log(parseCookies(req).qid);
       const apollo = initApollo(
         {},
         {
