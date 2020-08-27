@@ -50,12 +50,12 @@ const main = async () => {
         client: redisClient,
         disableTouch: true,
       }),
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
-        // httpOnly: true,
-        sameSite: "lax",
-        secure: __prod__, // cookie only works with https
-      },
+      // cookie: {
+      //   maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+      //   // httpOnly: true,
+      //   sameSite: "lax",
+      //   secure: __prod__, // cookie only works with https
+      // },
       saveUninitialized: false,
       secret: process.env.COOKIE_SECRET || "super secret key",
       resave: false,
