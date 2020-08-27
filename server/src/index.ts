@@ -19,6 +19,7 @@ const main = async () => {
   // SETTING UP DATABASE AND MIGRATING
   await createConnection(config);
   // SETTING UP REDIS STORE FOR USER SESSIONS
+  console.log(process.env.REDIS_URL);
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient({ url: process.env.REDIS_URL });
 
