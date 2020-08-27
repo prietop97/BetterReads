@@ -67,7 +67,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         secret: process.env.COOKIE_SECRET || "super secret key",
         resave: false,
     }));
-    app.set("trust proxy", 1);
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
             resolvers: [

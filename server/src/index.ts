@@ -62,7 +62,7 @@ const main = async () => {
     })
   );
 
-  app.set("trust proxy", 1);
+  // app.set("trust proxy", 1);
 
   // CREATING THE APOLLO SERVER, THIS IS WHERE RESOLVERS RESIDE.
   const apolloServer = new ApolloServer({
