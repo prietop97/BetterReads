@@ -25,7 +25,7 @@ function create(initialState: any, { getToken }: Options) {
       ? "http://localhost:4000/graphql"
       : "https://betterreads-gql.herokuapp.com/graphql";
   const httpLink = createHttpLink({
-    uri: link,
+    uri: "https://betterreads-gql.herokuapp.com/graphql",
     credentials: "include",
   });
 
@@ -43,7 +43,7 @@ function create(initialState: any, { getToken }: Options) {
   return new ApolloClient({
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
-    link: authLink.concat(httpLink),
+    link: httpLink,
     cache: new InMemoryCache().restore(initialState || {}),
   });
 }
