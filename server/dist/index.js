@@ -52,8 +52,11 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             "https://better-reads-*",
         ],
     }));
+    app.set("trust proxy", 1);
     app.use(express_session_1.default({
         name: constants_1.COOKIE_NAME,
+        secret: process.env.COOKIE_SECRET || "super secret key",
+        resave: false,
         store: new RedisStore({
             client: redisClient,
             disableTouch: true,
@@ -61,11 +64,10 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
-            secure: false,
+            sameSite: "none",
+            secure: constants_1.__prod__,
         },
         saveUninitialized: false,
-        secret: process.env.COOKIE_SECRET || "super secret key",
-        resave: false,
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
