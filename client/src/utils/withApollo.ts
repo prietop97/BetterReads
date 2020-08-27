@@ -11,7 +11,7 @@ export const createClient = (ctx: NextPageContext) =>
     uri: url,
     credentials: "include",
     headers: {
-      cookie: ctx.req?.headers.cookie || "",
+      cookie: ctx?.req?.headers.cookie || "",
     },
     cache: new InMemoryCache(),
   });
