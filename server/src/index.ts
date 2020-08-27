@@ -27,7 +27,11 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      origin: ["https://better-reads.vercel.app", "http://localhost:3000"],
+      origin: [
+        "https://better-reads.vercel.app",
+        "http://localhost:3000",
+        "https://better-reads-niheif6qc.vercel.app",
+      ],
     })
   );
   // SETTING SESSIONS SETTINGS
