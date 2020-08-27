@@ -29,5 +29,4 @@ const Home: React.FC<homeProps> = ({}) => {
     </>
   );
 };
-
 export default withApollo({ ssr: true })(Home);
