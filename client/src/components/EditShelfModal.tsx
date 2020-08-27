@@ -30,7 +30,6 @@ export const EditShelfModal: React.FC<CreateShelfModalProps> = ({
   name,
 }) => {
   const [editBookshelf] = useUpdateBookshelfMutation();
-  console.log(id);
   return (
     <Modal isOpen={isOpen} isCentered onClose={() => setIsOpen(false)}>
       <ModalOverlay />
@@ -45,7 +44,6 @@ export const EditShelfModal: React.FC<CreateShelfModalProps> = ({
                 variables: { id: id, name: values.name },
                 refetchQueries: [{ query: MyBookshelvesDocument }],
               });
-              console.log(bookshelf);
               if (bookshelf.data?.updateBookshelf?.bookshelf) {
                 setIsOpen(false);
               } else {

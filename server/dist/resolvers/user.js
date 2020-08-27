@@ -130,7 +130,6 @@ let UserResolver = class UserResolver {
                     };
                 }
             }
-            console.log(req.session);
             req.session.userId = user.id;
             return { user };
         });
@@ -149,7 +148,6 @@ let UserResolver = class UserResolver {
                     errors: [{ field: "password", message: "incorrect password" }],
                 };
             }
-            console.log(req.session);
             req.session.userId = user.id;
             return {
                 user,

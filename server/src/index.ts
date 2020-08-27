@@ -21,11 +21,9 @@ const main = async () => {
   // SETTING UP DATABASE AND MIGRATING
   await createConnection(config);
   // SETTING UP REDIS STORE FOR USER SESSIONS
-  console.log(process.env.REDIS_URL);
   const RedisStore = connectRedis(session);
   let clientSettings: redis.ClientOpts | undefined = undefined;
   if (__prod__) clientSettings = { url: process.env.REDIS_URL };
-  console.log(clientSettings);
   const redisClient = redis.createClient(clientSettings);
   redisClient.on("connect", () => console.log("Connected to redis"));
   redisClient.on("ready", () => console.log("Client connected to redis"));

@@ -32,12 +32,10 @@ const typeormConfig_1 = __importDefault(require("./typeormConfig"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     dotenv_1.default.config();
     yield typeorm_1.createConnection(typeormConfig_1.default);
-    console.log(process.env.REDIS_URL);
     const RedisStore = connect_redis_1.default(express_session_1.default);
     let clientSettings = undefined;
     if (constants_1.__prod__)
         clientSettings = { url: process.env.REDIS_URL };
-    console.log(clientSettings);
     const redisClient = redis_1.default.createClient(clientSettings);
     redisClient.on("connect", () => console.log("Connected to redis"));
     redisClient.on("ready", () => console.log("Client connected to redis"));

@@ -31,7 +31,6 @@ export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
-  console.log(id);
   return (
     <Box mt={2} borderBottom="1px solid rgb(217,217,217)">
       <DeleteShelfModal isOpen={isOpen} setIsOpen={setIsOpen} id={id!} />

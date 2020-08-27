@@ -122,7 +122,6 @@ export const ManageBookshelfModal: React.FC<addBookModalProps> = ({
             <Button
               onClick={async () => {
                 if (Object.keys(toAdd).length) {
-                  console.log(toAdd);
                   await addBookToShelf({
                     variables: {
                       shelfId: id,
