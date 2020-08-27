@@ -103,6 +103,7 @@ export class UserResolver {
         };
       }
     }
+    console.log(req.session);
     req.session!.userId = user.id;
     return { user };
   }
@@ -124,6 +125,7 @@ export class UserResolver {
         errors: [{ field: "password", message: "incorrect password" }],
       };
     }
+    console.log(req.session);
     req.session!.userId = user.id;
     return {
       user,
