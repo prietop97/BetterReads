@@ -26,7 +26,7 @@ const main = async () => {
   let clientSettings: redis.ClientOpts | undefined = undefined;
   if (__prod__) clientSettings = { url: process.env.REDIS_URL };
   const redisClient = redis.createClient(clientSettings);
-
+  console.log(__prod__);
   const app = express();
   app.use(
     cors({
