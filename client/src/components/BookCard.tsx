@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/core";
 import { FaStar, FaHeart } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { AiOutlineArrowDown } from "react-icons/ai";
 import {
   useCreateBookMutation,
   useCreateUserBookMutation,
