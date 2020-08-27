@@ -28,6 +28,8 @@ const main = async () => {
   console.log(clientSettings);
   const redisClient = redis.createClient(clientSettings);
   redisClient.on("connect", () => console.log("Connected to redis"));
+  redisClient.on("ready", () => console.log("Client connected to redis"));
+  redisClient.on("error", (err) => console.log("Redis error", err));
   const app = express();
   app.use(
     cors({

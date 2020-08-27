@@ -40,6 +40,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(clientSettings);
     const redisClient = redis_1.default.createClient(clientSettings);
     redisClient.on("connect", () => console.log("Connected to redis"));
+    redisClient.on("ready", () => console.log("Client connected to redis"));
+    redisClient.on("error", (err) => console.log("Redis error", err));
     const app = express_1.default();
     app.use(cors_1.default({
         credentials: true,
