@@ -35,6 +35,7 @@ const main = async () => {
         "https://better-reads.vercel.app",
         "http://localhost:3000",
         "https://better-reads-niheif6qc.vercel.app",
+        "https://better-reads-*",
       ],
     })
   );
