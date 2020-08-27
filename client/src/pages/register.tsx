@@ -5,7 +5,6 @@ import { InputField } from "../components/InputField";
 import { useRegisterMutation, MeQuery, MeDocument } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { Button } from "@chakra-ui/core";
-import { withApollo } from "../utils/withApollo";
 import { AuthWrapper } from "../components/AuthWrapper";
 
 interface Send {
@@ -94,4 +93,4 @@ const Register: React.FC<{}> = ({}) => {
     </AuthWrapper>
   );
 };
-export default withApollo({ ssr: true })(Register);
+export default Register;

@@ -1,6 +1,5 @@
 import React from "react";
 import { NavBar } from "../components/NavBar";
-import { withApollo } from "../utils/withApollo";
 import { SearchBooks } from "../components/SearchBooks";
 import { HomeLibrary } from "../components/HomeLibrary";
 import { PageLayout } from "../components/PageLayout";
@@ -29,4 +28,4 @@ const Home: React.FC<homeProps> = ({}) => {
     </>
   );
 };
-export default withApollo({ ssr: true })(Home);
+export default Home;

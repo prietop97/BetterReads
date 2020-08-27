@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavBar } from "../../components/NavBar";
 import { PageLayout } from "../../components/PageLayout";
-import { withApollo } from "../../utils/withApollo";
 import { BookCard } from "../../components/BookCard";
 import { useRouter } from "next/router";
 import { SearchBooks } from "../../components/SearchBooks";
@@ -177,4 +176,4 @@ const BookPage: React.FC<BookPageProps> = ({}) => {
   );
 };
 
-export default withApollo({ ssr: true })(BookPage);
+export default BookPage;

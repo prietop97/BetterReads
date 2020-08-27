@@ -1,5 +1,4 @@
 import React from "react";
-import { withApollo } from "../utils/withApollo";
 import { NavBar } from "../components/NavBar";
 import { SearchBooks } from "../components/SearchBooks";
 import { useMyBookshelvesQuery, useMyBooksQuery } from "../generated/graphql";
@@ -53,4 +52,4 @@ const Shelves: React.FC<shelvesProps> = ({}) => {
   );
 };
 
-export default withApollo({ ssr: true })(Shelves);
+export default Shelves;

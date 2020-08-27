@@ -4,7 +4,6 @@ import { Flex, Text, Button, Box, Image, Heading } from "@chakra-ui/core";
 import { GiBookshelf } from "react-icons/gi";
 import { AiFillExperiment } from "react-icons/ai";
 import { FaBookReader } from "react-icons/fa";
-import { withApollo } from "../utils/withApollo";
 import { useRouter } from "next/router";
 interface indexProps {}
 
@@ -165,4 +164,4 @@ const Index: React.FC<indexProps> = ({}) => {
   );
 };
 
-export default withApollo({ ssr: true })(Index);
+export default Index;

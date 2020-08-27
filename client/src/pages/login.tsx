@@ -5,7 +5,6 @@ import { InputField } from "../components/InputField";
 import { useLoginMutation, MeDocument, MeQuery } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { Button } from "@chakra-ui/core";
-import { withApollo } from "../utils/withApollo";
 import { AuthWrapper } from "../components/AuthWrapper";
 
 interface loginProps {}
@@ -74,4 +73,4 @@ const Login: React.FC<loginProps> = ({}) => {
     </AuthWrapper>
   );
 };
-export default withApollo({ ssr: true })(Login);
+export default Login;

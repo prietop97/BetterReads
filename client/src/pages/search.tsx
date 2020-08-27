@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavBar } from "../components/NavBar";
 import { SearchBooks } from "../components/SearchBooks";
-import { withApollo } from "../utils/withApollo";
 import { PageLayout } from "../components/PageLayout";
 import { Flex, Button } from "@chakra-ui/core";
 import { NextPage } from "next";
@@ -101,4 +100,4 @@ const Search: NextPage<any> = () => {
   );
 };
 
-export default withApollo({ ssr: true })(Search);
+export default Search;
