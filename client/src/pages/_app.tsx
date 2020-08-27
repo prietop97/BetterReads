@@ -4,10 +4,10 @@ import theme from "../theme";
 function MyApp({ Component, pageProps }: any) {
   return (
     <ThemeProvider theme={theme}>
-      <ColorModeProvider>
-        <CSSReset />
-        <Component {...pageProps} />
-      </ColorModeProvider>
+      {/* <ColorModeProvider> */} {/* ENABLE AFTER FIX DARK MODE */}
+      <CSSReset />
+      <Component {...pageProps} />
+      {/* </ColorModeProvider> */}
     </ThemeProvider>
   );
 }

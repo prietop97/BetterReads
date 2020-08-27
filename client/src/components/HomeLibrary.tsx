@@ -85,7 +85,6 @@ export const HomeLibrary: React.FC<HomeLibrariesProps> = ({
             </Menu>
           )}
         </Flex>
-        {router.route !== "/shelves" && <Text>View All</Text>}
       </Flex>
       <Flex
         justifyContent={onlyImage ? "flex-start" : "space-between"}
