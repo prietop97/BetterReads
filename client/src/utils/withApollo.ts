@@ -11,9 +11,7 @@ export const createClient = (ctx: NextPageContext) =>
     uri: url,
     credentials: "include",
     headers: {
-      cookie:
-        (typeof window === "undefined" ? ctx.req?.headers.cookie : undefined) ||
-        "",
+      cookie: ctx.req?.headers.cookie || "",
     },
     cache: new InMemoryCache(),
   });

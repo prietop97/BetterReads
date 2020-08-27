@@ -37,6 +37,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     let clientSettings = undefined;
     if (constants_1.__prod__)
         clientSettings = { url: process.env.REDIS_URL };
+    console.log(clientSettings);
     const redisClient = redis_1.default.createClient(clientSettings);
     redisClient.on("connect", () => console.log("Connected to redis"));
     const app = express_1.default();
@@ -54,7 +55,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         store: new RedisStore({
             client: redisClient,
             disableTouch: true,
-            url: clientSettings === null || clientSettings === void 0 ? void 0 : clientSettings.url,
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
