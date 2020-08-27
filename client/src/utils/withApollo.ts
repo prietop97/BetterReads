@@ -2,11 +2,13 @@ import { createWithApollo } from "./createWithApollo";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { NextPageContext } from "next";
 
-const url = "https://betterreads-gql.herokuapp.com/graphql";
-const dev = "http://localhost:4000/graphql";
+const url =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:4000/graphql"
+    : "https://betterreads-gql.herokuapp.com/graphql";
 export const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
-    uri: dev,
+    uri: url,
     credentials: "include",
     headers: {
       cookie:

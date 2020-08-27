@@ -6,14 +6,14 @@ import { BookCard } from "../../components/BookCard";
 import { useRouter } from "next/router";
 import { SearchBooks } from "../../components/SearchBooks";
 import { Box, Text, Heading, Flex, Tag } from "@chakra-ui/core";
-import { useMeQuery } from "../../generated/graphql";
+// import { useMeQuery } from "../../generated/graphql";
 
 interface BookPageProps {}
 
 const BookPage: React.FC<BookPageProps> = ({}) => {
-  const { data } = useMeQuery();
+  // const { data } = useMeQuery();
   const router = useRouter();
-  if (!data || !data?.me) router.push("/");
+  // if (!data || !data?.me) router.push("/");
   const [book, setBook] = useState<any>({});
   const categoriesAlgo = (x: string[]) => {
     let myarray: string[] = [];
