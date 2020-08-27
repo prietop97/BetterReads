@@ -20,7 +20,7 @@ import {
   useRemoveBooksFromShelfMutation,
   MyBookshelvesDocument,
 } from "../generated/graphql";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 interface addBookModalProps {
   isOpen: boolean;
@@ -35,9 +35,9 @@ export const ManageBookshelfModal: React.FC<addBookModalProps> = ({
   id,
   name,
 }) => {
-  const { data, error } = useMyBooksQuery();
-  const router = useRouter();
-  if (error) router.push("/login");
+  const { data } = useMyBooksQuery();
+  // const router = useRouter();
+  // if (error) router.push("/login");
   const { data: bookshelfBooks } = useMyBookshelfQuery({ variables: { name } });
   const [addBookToShelf] = useAddBooksToShelfMutation();
   const [removeBookFromShelf] = useRemoveBooksFromShelfMutation();

@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
+const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
@@ -29,13 +30,25 @@ const userBook_1 = require("./resolvers/userBook");
 const bookshelf_1 = require("./resolvers/bookshelf");
 const typeormConfig_1 = __importDefault(require("./typeormConfig"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    dotenv_1.default.config();
     yield typeorm_1.createConnection(typeormConfig_1.default);
+    console.log(process.env.REDIS_URL);
     const RedisStore = connect_redis_1.default(express_session_1.default);
-    const redisClient = redis_1.default.createClient({ url: process.env.REDIS_URL });
+    let clientSettings = undefined;
+    if (constants_1.__prod__)
+        clientSettings = { url: process.env.REDIS_URL };
+    console.log(clientSettings);
+    const redisClient = redis_1.default.createClient(clientSettings);
+    redisClient.on("connect", () => console.log("Connected to redis"));
     const app = express_1.default();
     app.use(cors_1.default({
         credentials: true,
-        origin: ["https://better-reads.vercel.app", "http://localhost:3000"],
+        origin: [
+            "https://better-reads.vercel.app",
+            "http://localhost:3000",
+            "https://better-reads-niheif6qc.vercel.app",
+            "https://better-reads-*",
+        ],
     }));
     app.use(express_session_1.default({
         name: constants_1.COOKIE_NAME,
@@ -45,7 +58,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-            httpOnly: true,
             sameSite: "lax",
             secure: constants_1.__prod__,
         },
