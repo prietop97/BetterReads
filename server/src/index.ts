@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import dotenv from "dotenv";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -16,18 +17,25 @@ import { BookshelfResolver } from "./resolvers/bookshelf";
 import config from "./typeormConfig";
 
 const main = async () => {
+  dotenv.config();
   // SETTING UP DATABASE AND MIGRATING
   await createConnection(config);
   // SETTING UP REDIS STORE FOR USER SESSIONS
   console.log(process.env.REDIS_URL);
   const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient({ url: process.env.REDIS_URL });
+  let clientSettings: redis.ClientOpts | undefined = undefined;
+  if (__prod__) clientSettings = { url: process.env.REDIS_URL };
+  const redisClient = redis.createClient(clientSettings);
 
   const app = express();
   app.use(
     cors({
       credentials: true,
-      origin: ["https://better-reads.vercel.app", "http://localhost:3000"],
+      origin: [
+        "https://better-reads.vercel.app",
+        "http://localhost:3000",
+        "https://better-reads-niheif6qc.vercel.app",
+      ],
     })
   );
   // SETTING SESSIONS SETTINGS
