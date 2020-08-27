@@ -18,14 +18,14 @@ import { useApolloClient } from "@apollo/client";
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-  const { data, loading, error } = useMeQuery();
+  const { data, loading } = useMeQuery();
   const router = useRouter();
-  if (error?.message) router.push("/login");
-  useEffect(() => {
-    if (!data) {
-      router.push("/login");
-    }
-  }, [error]);
+  // if (error?.message) router.push("/login");
+  // useEffect(() => {
+  //   if (!data) {
+  //     router.push("/login");
+  //   }
+  // }, [error]);
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
 
