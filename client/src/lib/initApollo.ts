@@ -25,11 +25,11 @@ function create(initialState: any, { getToken }: Options) {
       ? "http://localhost:4000/graphql"
       : "https://betterreads-gql.herokuapp.com/graphql";
   const httpLink = createHttpLink({
-    uri: "https://betterreads-gql.herokuapp.com/graphql",
+    uri: link,
     credentials: "include",
   });
 
-  const authLink = setContext((_, { headers }) => {
+  setContext((_, { headers }) => {
     const token = getToken();
     return {
       headers: {
